@@ -1,6 +1,5 @@
-import { Flex, Text, Box, Stack, Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import mountainImg from 'assets/img/mountain.svg';
-import taskfyLogo from 'assets/img/taskfy_logo.png';
 import { Footer } from 'components/Footer';
 import { Header } from 'components/Header';
 import { PricingCard, Apresentation } from 'components/landing';
