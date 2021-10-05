@@ -49,7 +49,7 @@ const Home: NextPage = () => {
         <Header />
         <Apresentation />
         <PricingCard />
-        <Box position="absolute" bottom="-5px">
+        <Box position="absolute" bottom="-5px" zIndex="-1">
           <Image src={mountainImg} alt="Montanhas" />
         </Box>
       </Box>
