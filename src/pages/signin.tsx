@@ -3,7 +3,7 @@ import { Footer } from 'components/Footer';
 import { Header } from 'components/Header';
 import { NextPage } from 'next';
 
-const LoginPage: NextPage = () => {
+const SignInPage: NextPage = () => {
   return (
     <Box overflow="hidden">
       <Header />
@@ -12,4 +12,4 @@ const LoginPage: NextPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignInPage;
