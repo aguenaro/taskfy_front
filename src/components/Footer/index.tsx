@@ -1,6 +1,8 @@
 import { FaGithub } from 'react-icons/fa';
 
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
+import taskfyLogo from 'assets/img/taskfy_logo_branco.png';
+import Image from 'next/image';
 
 export const Footer = () => {
   return (
@@ -11,7 +13,16 @@ export const Footer = () => {
         borderBottom="1px"
         borderBottomColor="white"
       >
-        <Box></Box>
+        <Box>
+          <Image
+            src={taskfyLogo}
+            alt="Logo taskfy"
+            layout="fixed"
+            width={137}
+            height={47}
+            className="logo-branco"
+          />
+        </Box>
         <Text textAlign="center" color="white" fontSize="smaller">
           Projeto desenvolvido com objetivos educacionais para a disciplina PCS
           3636 - <br />

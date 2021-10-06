@@ -1,6 +1,5 @@
-import { Flex, Text, Button, Box } from '@chakra-ui/react';
-import mountainImg from 'assets/img/mountain.png';
-import Image from 'next/image';
+import { Flex, Text, Button } from '@chakra-ui/react';
+import Link from 'next/link';
 
 import { PlanCard } from './PlanCard';
 
@@ -30,18 +29,21 @@ export const PricingCard = () => {
         <PlanCard planType="single person" price={4.99} />
         <PlanCard planType="enterprise" price={15.99} />
       </Flex>
-      <Button
-        borderRadius={15}
-        size="md"
-        bg="teal.200"
-        boxShadow="dark-lg"
-        color="black"
-        mt={6}
-        mx="auto"
-        style={{ boxShadow: '0px 0px 20px 4px #4BCFEE' }}
-      >
-        improve my tech productivity
-      </Button>
+      <Link href="/signup">
+        <Button
+          borderRadius={15}
+          size="md"
+          bg="teal.200"
+          boxShadow="dark-lg"
+          color="black"
+          mt={6}
+          mx="auto"
+          style={{ boxShadow: '0px 0px 20px 4px #4BCFEE' }}
+          _hover={{ color: 'white' }}
+        >
+          improve my tech productivity
+        </Button>
+      </Link>
     </Flex>
   );
 };
