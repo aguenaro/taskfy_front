@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import taskfyLogo from 'assets/img/taskfy_logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
