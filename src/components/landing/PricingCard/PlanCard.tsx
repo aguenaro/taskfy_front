@@ -7,7 +7,7 @@ interface PlanCardProps {
 
 export const PlanCard = ({ planType, price }: PlanCardProps) => {
   return (
-    <Box p={6} w="35%" bg="blue.900" borderRadius="20px">
+    <Box p={6} w="35%" bg="blue.800" borderRadius="20px">
       <Box borderBottom="1px" borderColor="white" pb={3} mb={3}>
         <Text color="white" textAlign="center" fontSize="2xl">
           {planType}

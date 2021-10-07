@@ -14,7 +14,7 @@ export const PullRequestItem = ({
   user,
 }: PullRequestItemProps) => {
   return (
-    <Stack spacing={1} bg="blue.900" w="100%" borderRadius={10} p={2}>
+    <Stack spacing={1} bg="blue.800" w="100%" borderRadius={10} p={2}>
       <Text color="white">
         PR{' '}
         <Text as="span" color="teal.200">
