@@ -15,10 +15,7 @@ export const theme = extendTheme({
     blue: {
       '800': '#13254C',
       '900': '#1D264B',
-<<<<<<< HEAD
       '1000': '#040D31',
-=======
->>>>>>> d974a09d7ffa18f3b7242c61f34f3adcee75f028
     },
   },
   components: {
