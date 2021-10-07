@@ -7,12 +7,9 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Input,
-  FormControl,
-  FormLabel,
   Box,
 } from '@chakra-ui/react';
-
+import { Input } from 'components/Forms';
 interface CreateBoardModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -30,28 +27,12 @@ export const CreateBoardModal = ({
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
         <ModalBody>
           <Box as="form">
-            <FormControl isRequired mb={3}>
-              <FormLabel color="white">board name</FormLabel>
-              <Input
-                variant="filled"
-                bg="blue.900"
-                borderRadius="15px"
-                color="gray.200"
-                _hover={{ bg: 'blue.800' }}
-                _focus={{ bg: 'white', color: 'black' }}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel color="white">github project (optional)</FormLabel>
-              <Input
-                variant="filled"
-                bg="blue.900"
-                borderRadius="15px"
-                color="gray.200"
-                _hover={{ bg: 'blue.800' }}
-                _focus={{ bg: 'white', color: 'black' }}
-              />
-            </FormControl>
+            <Input isRequired label="board name" name="boardName" type="text" />
+            <Input
+              label="github project (optional)"
+              name="gitProject"
+              type="text"
+            />
           </Box>
         </ModalBody>
 
