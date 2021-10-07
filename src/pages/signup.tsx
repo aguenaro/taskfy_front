@@ -1,9 +1,9 @@
 import { Box, Flex } from '@chakra-ui/layout';
+import wavesImg from 'assets/img/waves.svg';
 import { Footer } from 'components/Footer';
 import { Header } from 'components/Header';
-import { SignupCard, VerticalDivision } from 'components/Signup';
+import { SignupCard, VerticalDivision } from 'components/signup';
 import { NextPage } from 'next';
-import wavesImg from 'assets/img/waves.svg';
 import Image from 'next/image';
 
 const SignupPage: NextPage = () => {

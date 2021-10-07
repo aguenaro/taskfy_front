@@ -10,7 +10,9 @@ export const VerticalDivision = () => {
       minH="200px"
     >
       <Divider orientation="vertical" color="#FFFFFF" h="200px" />
-      <Text color="#FFFFFF" margin="20px 0 20px 0"> Or </Text>
+      <Text color="#FFFFFF" margin="20px 0 20px 0">
+        Or
+      </Text>
       <Divider orientation="vertical" h="200px" />
     </Flex>
   );

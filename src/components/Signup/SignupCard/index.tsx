@@ -2,6 +2,7 @@ import { Box, Text, Divider } from '@chakra-ui/react';
 
 import { SignupForm } from './SignupForm';
 import { SignupOAuth } from './SignupOAuth';
+
 interface SignUpCardProps {
   OAuthCard: boolean;
 }
