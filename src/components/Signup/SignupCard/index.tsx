@@ -1,8 +1,16 @@
 import { Box, Text, Divider } from '@chakra-ui/react';
 
 import { SignupForm } from './SignupForm';
+import { SignupOAuth } from './SignupOAuth';
+interface SignUpCardProps {
+  OAuthCard: boolean;
+}
 
-export const SignupCard = () => {
+export const SignupCard = ({ OAuthCard }: SignUpCardProps) => {
+  const text = OAuthCard
+    ? 'Create account using...'
+    : 'Create your account now';
+  const CardContent = OAuthCard ? <SignupOAuth /> : <SignupForm />;
   return (
     <Box
       w="100%"
@@ -13,10 +21,11 @@ export const SignupCard = () => {
       borderRadius="50px"
     >
       <Text fontSize="xl" color="white" textAlign="center" lineHeight="2rem">
-        Create your account now!
+        {text}
       </Text>
       <Divider />
-      <SignupForm />
+      {CardContent}
     </Box>
   );
 };
+SignupCard.defaultProps = { OAuthCard: false };
