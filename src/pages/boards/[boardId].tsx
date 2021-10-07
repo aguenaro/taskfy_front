@@ -1,15 +1,15 @@
-import { Box } from '@chakra-ui/layout';
+import { Box } from '@chakra-ui/react';
 import { Footer } from 'components/Footer';
 import { Header } from 'components/Header';
 import { NextPage } from 'next';
 
-const SignInPage: NextPage = () => {
+const BoardDetails: NextPage = () => {
   return (
-    <Box overflow="hidden">
+    <Box overflowX="hidden">
       <Header />
       <Footer />
     </Box>
   );
 };
 
-export default SignInPage;
+export default BoardDetails;

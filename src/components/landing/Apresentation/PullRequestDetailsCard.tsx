@@ -40,7 +40,7 @@ export const PullRequestDetailsCard = () => {
           - landing page
         </Text>
       </Flex>
-      <Box bg="blue.900" w="100%" borderRadius={10} p={2}>
+      <Box bg="blue.800" w="100%" borderRadius={10} p={2}>
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>

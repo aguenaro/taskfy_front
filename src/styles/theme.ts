@@ -10,7 +10,18 @@ export const theme = extendTheme({
       '200': '#4BCFEE',
     },
     blue: {
-      '900': '#13254C',
+      '800': '#13254C',
+      '900': '#1D264B',
+    },
+  },
+  components: {
+    Modal: {
+      baseStyle: () => ({
+        dialog: {
+          bg: 'gray.900',
+          border: '1px solid white',
+        },
+      }),
     },
   },
   fonts: {
