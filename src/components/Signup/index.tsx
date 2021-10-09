@@ -1,2 +1,3 @@
-export * from './SignupCard';
+export * from './SignupForm';
+export * from './SignupOAuth';
 export * from './VerticalDivision';
