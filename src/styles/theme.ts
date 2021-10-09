@@ -9,9 +9,13 @@ export const theme = extendTheme({
     teal: {
       '200': '#4BCFEE',
     },
+    green: {
+      '500': '#238636',
+    },
     blue: {
       '800': '#13254C',
       '900': '#1D264B',
+      '1000': '#040D31',
     },
   },
   components: {
