@@ -1,14 +1,13 @@
 import { MdNotifications } from 'react-icons/md';
 
-import { HStack, Text, Button, Icon } from '@chakra-ui/react';
-import Link from 'next/link';
+import { HStack, Text, Button, Icon, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import { AddMenu } from './AddMenu';
 import { ProfileMenu } from './ProfileMenu';
 
 export const NavigationMenu = () => {
-  const { route } = useRouter();
+  const { route, push } = useRouter();
 
   // const externalPaths = ['/', '/signin', '/signup'];
   const internalPaths = ['/boards', '/boards/[boardId]'];
@@ -33,20 +32,20 @@ export const NavigationMenu = () => {
             sign in
           </Text>
         </Link>
-        <Link href="/signup">
-          <Button
-            borderRadius={15}
-            size="md"
-            bg="teal.200"
-            boxShadow="dark-lg"
-            color="black"
-            style={{ boxShadow: '0px 0px 20px 4px #4BCFEE' }}
-            _hover={{ color: 'white' }}
-            zIndex="1"
-          >
-            SIGN UP
-          </Button>
-        </Link>{' '}
+
+        <Button
+          borderRadius={15}
+          size="md"
+          bg="teal.200"
+          boxShadow="dark-lg"
+          color="black"
+          style={{ boxShadow: '0px 0px 20px 4px #4BCFEE' }}
+          _hover={{ color: 'white' }}
+          zIndex="1"
+          onClick={() => push('/signup')}
+        >
+          SIGN UP
+        </Button>
       </>
     );
   };

@@ -1,7 +1,6 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Link } from '@chakra-ui/react';
 import taskfyLogo from 'assets/img/taskfy_logo.png';
 import Image from 'next/image';
-import Link from 'next/link';
 
 import { NavigationMenu } from './NavigationMenu';
 
@@ -17,13 +16,7 @@ export const Header = () => {
       bg="gray.900"
     >
       <Link href="/">
-        <Image
-          src={taskfyLogo}
-          alt="Logo taskfy"
-          layout="fixed"
-          width={137}
-          height={47}
-        />
+        <Image src={taskfyLogo} alt="Logo taskfy" width={137} height={47} />
       </Link>
       <NavigationMenu />
     </Flex>
