@@ -12,8 +12,6 @@ export const NavigationMenu = () => {
   // const externalPaths = ['/', '/signin', '/signup'];
   const internalPaths = ['/boards', '/boards/[boardId]'];
 
-  console.log(route);
-
   const ExternalMenu = () => {
     return (
       <>

@@ -12,8 +12,10 @@ import {
   Avatar,
   Button,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 export const ProfileMenu = () => {
+  const { push } = useRouter();
   return (
     <Menu placement="bottom-start" autoSelect={false}>
       <MenuButton
@@ -61,7 +63,11 @@ export const ProfileMenu = () => {
           </Text>
         </MenuItem>
         <MenuDivider />
-        <MenuItem _hover={{ bg: 'grey' }} icon={<BiLogOut color="white" />}>
+        <MenuItem
+          _hover={{ bg: 'grey' }}
+          icon={<BiLogOut color="white" />}
+          onClick={() => push('/signin')}
+        >
           <Text color="white" fontSize="xs">
             sign out
           </Text>

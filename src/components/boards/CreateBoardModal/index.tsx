@@ -44,7 +44,13 @@ export const CreateBoardModal = ({
     console.log(values);
   };
   return (
-    <Modal isOpen={isOpen} onClose={onClose} variant="blue" isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      variant="blue"
+      isCentered
+      motionPreset="slideInBottom"
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader color="white">create board</ModalHeader>
