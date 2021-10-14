@@ -20,7 +20,9 @@ const createAccountSchema = yup.object().shape({
   username: yup.string().required('Username is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   password: yup.string().required('Password is required'),
-  passwordConfirmtion: yup.string().oneOf([null]),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords should be equal'),
 });
 
 export const SignupForm = () => {

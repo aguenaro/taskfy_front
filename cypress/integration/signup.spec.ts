@@ -31,4 +31,14 @@ describe('Sign Up', () => {
       .should('be.visible')
       .should('have.text', 'Invalid email');
   });
+
+  it('Input differents password', () => {
+    cy.get('#password').type('password1');
+    cy.get('#password').type('password2');
+    cy.contains('Create my account!').click();
+
+    cy.get('#field-6-feedback')
+      .should('be.visible')
+      .should('have.text', 'Passwords should be equal');
+  });
 });
