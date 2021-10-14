@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Divider, Button, Icon } from '@chakra-ui/react';
+import { Box, Flex, Text, Divider, Button, Icon, Link } from '@chakra-ui/react';
 import { FaGithub, FaGoogle, FaApple } from 'react-icons/fa';
 import { Input } from 'components/Forms';
 import { Footer } from 'components/Footer';
@@ -12,7 +12,11 @@ import { SigninOAuth } from 'components/signin/SigninOAuth';
 const SignInPage: NextPage = () => {
   return (
     <Flex direction="column" align="center">
-      <Image src={logo} alt="logo taskfy branca" />
+      <Box marginTop="50px">
+        <Link href="/">
+          <Image src={logo} alt="logo taskfy branca" />
+        </Link>
+      </Box>
       <Box
         w="40%"
         bg="blue.1000"
@@ -59,15 +63,15 @@ const SignInPage: NextPage = () => {
             justify="space-around"
             w="100%"
             h="100%"
-            p="0 75px"
+            p="0 50px"
           >
-            <Icon as={FaGithub} color="white" w="80px" h="80px" />
-            <Icon as={FaGoogle} color="white" w="80px" h="80px" />
-            <Icon as={FaApple} color="white" w="80px" h="80px" />
+            <Icon as={FaGithub} color="white" w="60px" h="60px" />
+            <Icon as={FaGoogle} color="white" w="60px" h="60px" />
+            <Icon as={FaApple} color="white" w="60px" h="60px" />
           </Flex>
           <Text
             marginTop="10px"
-            fontSize="8px"
+            fontSize="12px"
             color="white"
             textAlign="center"
           >
