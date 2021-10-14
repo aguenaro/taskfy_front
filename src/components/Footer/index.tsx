@@ -16,7 +16,7 @@ export const Footer = () => {
         <Box>
           <Image
             src={taskfyLogo}
-            alt="Logo taskfy"
+            alt="Logo taskfy footer"
             layout="fixed"
             width={137}
             height={47}
