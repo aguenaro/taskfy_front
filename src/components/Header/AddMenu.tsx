@@ -36,7 +36,7 @@ export const AddMenu = () => {
         </MenuItem>
         <MenuItem _hover={{ bg: 'grey' }}>
           <Text color="white" fontSize="xs">
-            create organization
+            create a group
           </Text>
         </MenuItem>
       </MenuList>

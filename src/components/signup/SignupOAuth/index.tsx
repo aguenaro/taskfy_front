@@ -16,7 +16,7 @@ export const SignupOAuth = () => {
         Create account using
       </Text>
       <Divider />
-      <Box h="436px">
+      <Box h="520px">
         <Flex
           align="center"
           justify="space-around"
