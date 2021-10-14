@@ -75,7 +75,10 @@ const SignInPage: NextPage = () => {
             color="white"
             textAlign="center"
           >
-            Don’t have an account? <text style={{ color: 'blue' }}>Create</text>{' '}
+            Don’t have an account?{' '}
+            <Link href="/signup">
+              <text style={{ color: 'blue' }}>Create</text>
+            </Link>{' '}
             one right now!
           </Text>
         </Box>
