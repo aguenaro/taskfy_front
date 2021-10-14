@@ -1,4 +1,5 @@
-const server = 'http://localhost:3000';
+// @ts-ignore
+const server = process.env.NEXT_PUBLIC_APP_URL || '';
 
 describe('Navigation', () => {
   it('Navigate from home to signup', () => {
