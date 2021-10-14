@@ -1,8 +1,10 @@
 import { Flex, Text, Button, Link } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 import { PlanCard } from './PlanCard';
 
 export const PricingCard = () => {
+  const { push } = useRouter();
   return (
     <Flex
       position="relative"
@@ -28,21 +30,20 @@ export const PricingCard = () => {
         <PlanCard planType="single person" price={4.99} />
         <PlanCard planType="enterprise" price={15.99} />
       </Flex>
-      <Link href="/signup">
-        <Button
-          borderRadius={15}
-          size="md"
-          bg="teal.200"
-          boxShadow="dark-lg"
-          color="black"
-          mt={6}
-          mx="auto"
-          style={{ boxShadow: '0px 0px 20px 4px #4BCFEE' }}
-          _hover={{ color: 'white' }}
-        >
-          improve my tech productivity
-        </Button>
-      </Link>
+      <Button
+        borderRadius={15}
+        size="md"
+        bg="teal.200"
+        boxShadow="dark-lg"
+        color="black"
+        mt={6}
+        mx="auto"
+        style={{ boxShadow: '0px 0px 20px 4px #4BCFEE' }}
+        _hover={{ color: 'white' }}
+        onClick={() => push('/signup')}
+      >
+        improve my tech productivity
+      </Button>
     </Flex>
   );
 };

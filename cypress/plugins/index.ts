@@ -1,4 +1,6 @@
-// / <reference types="cypress" />
+// @ts-ignore
+require('dotenv').config();
+/// <reference types="cypress" />
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -17,6 +19,10 @@
  */
 // @ts-ignore
 module.exports = (on, config) => {
+  config.env.baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  // do not forget to return the changed config object!
+  return config;
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 };
