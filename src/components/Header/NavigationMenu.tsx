@@ -55,7 +55,7 @@ export const NavigationMenu = () => {
           api
         </Text>
         <Icon as={MdNotifications} color="white" w={7} h={7} />
-        <AddMenu />
+        {/* <AddMenu /> */}
         <ProfileMenu />
       </>
     );
