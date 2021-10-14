@@ -1,44 +1,92 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
+
 import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
+  Flex,
   ModalBody,
   ModalCloseButton,
   Button,
   Box,
 } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Forms';
+import * as yup from 'yup';
 interface CreateBoardModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+interface CreateBoardFormData {
+  boardName: string;
+  projectName?: string;
+}
+
+const createBoardSchema = yup.object().shape({
+  boardName: yup.string().required('Board name is required'),
+  gitProject: yup.string(),
+});
+
 export const CreateBoardModal = ({
   isOpen,
   onClose,
 }: CreateBoardModalProps) => {
+  const { register, handleSubmit, formState } = useForm({
+    resolver: yupResolver(createBoardSchema),
+  });
+
+  const handleCreateBoard: SubmitHandler<CreateBoardFormData> = async (
+    values
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log(values);
+  };
   return (
-    <Modal isOpen={isOpen} onClose={onClose} variant="blue" isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      variant="blue"
+      isCentered
+      motionPreset="slideInBottom"
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader color="white">create board</ModalHeader>
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
         <ModalBody>
-          <Box as="form">
-            <Input isRequired label="board name" name="boardName" type="text" />
+          <Flex
+            direction="column"
+            as="form"
+            onSubmit={handleSubmit(handleCreateBoard)}
+            noValidate
+          >
+            <Input
+              isRequired
+              label="board name"
+              type="text"
+              error={formState.errors.boardName}
+              {...register('boardName')}
+            />
             <Input
               label="github project (optional)"
-              name="gitProject"
               type="text"
+              error={formState.errors.gitProject}
+              {...register('gitProject')}
             />
-          </Box>
+            <Button
+              type="submit"
+              variant="solid"
+              margin="10px auto"
+              isLoading={formState.isSubmitting}
+            >
+              create project
+            </Button>
+          </Flex>
         </ModalBody>
 
-        <ModalFooter margin="auto">
-          <Button variant="solid">create project</Button>
-        </ModalFooter>
+        {/* <ModalFooter margin="auto"></ModalFooter> */}
       </ModalContent>
     </Modal>
   );
