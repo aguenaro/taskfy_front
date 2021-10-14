@@ -10,7 +10,7 @@ const SignupPage: NextPage = () => {
   return (
     <Box overflow="hidden">
       <Header />
-      <Box w="100%" h="80vh" position="relative">
+      <Box w="100%" h="90vh" p="50px 0" position="relative">
         <Flex minH="75vh" justify="space-evenly" align="center">
           <SignupForm />
           <VerticalDivision />
