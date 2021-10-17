@@ -20,11 +20,6 @@ export const NavigationMenu = () => {
             home
           </Text>
         </Link>
-        <Link href="/docs">
-          <Text fontSize="xl" color="white">
-            api
-          </Text>
-        </Link>
         <Link href="/signin">
           <Text fontSize="xl" color="white">
             sign in
@@ -51,11 +46,8 @@ export const NavigationMenu = () => {
   const InternalMenu = () => {
     return (
       <>
-        <Text fontSize="xl" color="white">
-          api
-        </Text>
         <Icon as={MdNotifications} color="white" w={7} h={7} />
-        <AddMenu />
+        {/* <AddMenu /> */}
         <ProfileMenu />
       </>
     );

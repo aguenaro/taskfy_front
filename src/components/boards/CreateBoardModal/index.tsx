@@ -13,10 +13,12 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Forms';
+import { Board } from 'interfaces/Board';
 import * as yup from 'yup';
 interface CreateBoardModalProps {
   isOpen: boolean;
   onClose: () => void;
+  addNewBoard: (newBoard: Board) => void;
 }
 
 interface CreateBoardFormData {
@@ -32,6 +34,7 @@ const createBoardSchema = yup.object().shape({
 export const CreateBoardModal = ({
   isOpen,
   onClose,
+  addNewBoard,
 }: CreateBoardModalProps) => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createBoardSchema),
@@ -41,7 +44,13 @@ export const CreateBoardModal = ({
     values
   ) => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    console.log(values);
+
+    addNewBoard({
+      title: values.boardName,
+      bgColor: `#${Math.random().toString(16).substr(-6)}`,
+    });
+
+    onClose();
   };
   return (
     <Modal
@@ -80,6 +89,8 @@ export const CreateBoardModal = ({
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}
+              loadingText="Creating"
+              spinnerPlacement="end"
             >
               create project
             </Button>

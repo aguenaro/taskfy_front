@@ -1,15 +1,15 @@
-import { MdEdit, MdChat } from 'react-icons/md';
-
 import {
   Box,
   Flex,
   Divider,
-  Icon,
-  Text,
   Button,
   Stack,
+  Editable,
+  EditablePreview,
+  EditableInput,
 } from '@chakra-ui/react';
 
+import { EditableControls } from './EditableControls';
 import { MembersList } from './MembersList';
 
 interface SidebarProps {
@@ -25,11 +25,17 @@ const members = [
 export const Sidebar = ({ boardName }: SidebarProps) => {
   return (
     <Box w="20vw" h="100%" p="10px 0" bg="rgba(2, 9, 37, 0.75)">
-      <Flex justify="space-between" align="center" m="0 20px">
-        <Text fontSize="lg" color="white">
-          {boardName}
-        </Text>
-        <Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} />
+      <Flex
+        justify="space-between"
+        align="center"
+        m="0 20px"
+        position="relative"
+      >
+        <Editable defaultValue={boardName} isPreviewFocusable={false}>
+          <EditablePreview color="white" />
+          <EditableInput color="white" id="boardName" />
+          <EditableControls />
+        </Editable>
       </Flex>
       <Divider mt={3} />
       <Flex
