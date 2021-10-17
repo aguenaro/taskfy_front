@@ -7,6 +7,7 @@ export const EditableControls = () => {
 
   return (
     <IconButton
+      aria-label="Edit board name"
       size="sm"
       icon={<Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} />}
       {...getEditButtonProps()}
