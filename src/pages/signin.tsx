@@ -36,12 +36,7 @@ const SignInPage: NextPage = () => {
           type="text"
           isRequired
         />
-        <Input
-          name="email_username"
-          label="password"
-          type="password"
-          isRequired
-        />
+        <Input name="password" label="password" type="password" isRequired />
         <Button
           type="submit"
           bg="green.500"
