@@ -1,54 +1,74 @@
-import { ForwardRefRenderFunction } from 'react';
+import { memo } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 
-import { Flex, Avatar, Text, forwardRef } from '@chakra-ui/react';
-import { formatDistance, parseISO } from 'date-fns';
-import { motion } from 'framer-motion';
+import { Flex, Avatar, Text } from '@chakra-ui/react';
+import { formatDistance, parseISO, differenceInDays } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Task } from 'interfaces/Task';
-
-const MotionCardContainer = motion(Flex);
 
 interface ColumnCardProps {
   task: Task;
+  index: number;
+  onClick: (task: Task) => void;
 }
 
-const ColumnCardComponent: ForwardRefRenderFunction<
-  HTMLDivElement,
-  ColumnCardProps
-> = ({ task }, ref) => {
+export const ColumnCardComponent = ({
+  task,
+  index,
+  onClick,
+}: ColumnCardProps) => {
+  function checkFinishDate(date: string) {
+    const differenceBetweenDates = differenceInDays(parseISO(date), new Date());
+
+    if (differenceBetweenDates > 0) {
+      return 'white';
+    } else if (differenceBetweenDates === 0) {
+      return 'yellow.300';
+    } else {
+      return 'red.300';
+    }
+  }
+
   return (
-    <MotionCardContainer
-      direction="column"
-      justify="space-between"
-      bg="gray.900"
-      h="75px"
-      p={3}
-      boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
-      borderRadius={5}
-      cursor="grab"
-      drag
-      dragConstraints={{ top: 0, bottom: 0, right: 0, left: 0 }}
-      dragElastic={1}
-      _onDrap={{ zIndex: '5' }}
-    >
-      <Text color="white" fontSize="sm" isTruncated>
-        {task.title}
-      </Text>
-      <Flex align="center">
-        <Avatar
-          name={task.author}
-          src={`https://avatars.githubusercontent.com/${task.author}`}
-          w={5}
-          h={5}
-          mr={2}
-        />
-        <Text color="white" fontSize="sm">
-          {formatDistance(parseISO(task.createdAt), new Date(), {
-            addSuffix: true,
-          })}
-        </Text>
-      </Flex>
-    </MotionCardContainer>
+    <Draggable draggableId={task.title} index={index}>
+      {(provided, snapshot) => (
+        <Flex
+          direction="column"
+          justify="space-between"
+          bg="gray.900"
+          h="75px"
+          p={3}
+          mb={3}
+          boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
+          borderRadius={5}
+          cursor="grab"
+          // onClick={onClick}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <Text color="white" fontSize="sm" isTruncated>
+            {task.title}
+          </Text>
+          <Flex align="center">
+            <Avatar
+              name={task.assignedFor}
+              src={`https://avatars.githubusercontent.com/${task.assignedFor}`}
+              w={5}
+              h={5}
+              mr={2}
+            />
+            <Text color={checkFinishDate(task.deadline)} fontSize="sm">
+              {formatDistance(parseISO(task.deadline), new Date(), {
+                locale: ptBR,
+                addSuffix: true,
+              })}
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+    </Draggable>
   );
 };
 
-export const ColumnCard = forwardRef(ColumnCardComponent);
+export const ColumnCard = memo(ColumnCardComponent);

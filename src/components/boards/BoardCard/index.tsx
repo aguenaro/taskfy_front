@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 interface BoardCardProps {
@@ -9,17 +9,22 @@ interface BoardCardProps {
 export const BoardCard = ({ bgColor, title }: BoardCardProps) => {
   const router = useRouter();
   return (
-    <Box
+    <Flex
+      align="end"
       borderRadius="20px"
-      bg={bgColor}
-      p={5}
-      w="270px"
+      bgGradient={`linear(to-b, ${bgColor}, gray.900)`}
+      w="30%"
       h="130px"
+      m="10px"
       boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 10px"
       cursor="pointer"
       onClick={() => router.push('/boards/1')}
     >
-      <Text color="white">{title}</Text>
-    </Box>
+      <Flex align="center" w="100%" h="40%" borderRadius="0 0 20px 20px" p={1}>
+        <Text color="white" ml={3} fontWeight="bold">
+          {title}
+        </Text>
+      </Flex>
+    </Flex>
   );
 };

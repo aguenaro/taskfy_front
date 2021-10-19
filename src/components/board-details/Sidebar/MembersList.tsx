@@ -13,7 +13,7 @@ export const MembersList = ({ members }: MembersListProps) => {
   return (
     <Box>
       <Text color="white" fontSize="sm" mb={3}>
-        members
+        membros
       </Text>
       <Stack spacing={3}>
         {members.map((member) => (
