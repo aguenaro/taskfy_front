@@ -78,12 +78,7 @@ export const CreateBoardModal = ({
               error={formState.errors.boardName}
               {...register('boardName')}
             />
-            <Input
-              label="github project (optional)"
-              type="text"
-              error={formState.errors.gitProject}
-              {...register('gitProject')}
-            />
+
             <Button
               type="submit"
               variant="solid"
