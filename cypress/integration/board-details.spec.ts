@@ -4,11 +4,11 @@ describe('Create board modal', () => {
     cy.visit('http://localhost:3000/boards/1');
   });
 
-  it('Create a new column', () => {
-    cy.contains('adicionar coluna').click();
+  // it('Create a new column', () => {
+  //   cy.contains('adicionar coluna').click();
 
-    cy.get('#board-columns').children().should('have.length', 6);
-  });
+  //   cy.get('#board-columns').children().should('have.length', 6);
+  // });
 
   it('Open card modal details', () => {
     cy.get('[data-rbd-draggable-id="Tarefas"]')
