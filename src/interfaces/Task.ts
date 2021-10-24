@@ -4,6 +4,5 @@ export interface Task {
   title: string;
   deadline: string;
   createdAt: string;
-  column: string;
   effort: number;
 }
