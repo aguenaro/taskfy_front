@@ -8,19 +8,23 @@ import { Task } from 'interfaces/Task';
 
 interface ColumnCardProps {
   task: Task;
+  column: string;
   index: number;
   onClick: (task: Task) => void;
 }
 
 export const ColumnCardComponent = ({
   task,
+  column,
   index,
   onClick,
 }: ColumnCardProps) => {
   function checkFinishDate(date: string) {
     const differenceBetweenDates = differenceInDays(parseISO(date), new Date());
 
-    if (differenceBetweenDates > 0) {
+    if (column === 'Finalizado') {
+      return 'green.300';
+    } else if (differenceBetweenDates > 0) {
       return 'white';
     } else if (differenceBetweenDates === 0) {
       return 'yellow.300';
@@ -42,7 +46,7 @@ export const ColumnCardComponent = ({
           boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
           borderRadius={5}
           cursor="grab"
-          // onClick={onClick}
+          onDoubleClick={() => onClick(task)}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
