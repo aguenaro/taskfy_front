@@ -8,12 +8,15 @@ import {
 } from 'react-beautiful-dnd';
 import { MdAdd } from 'react-icons/md';
 
-import { Box, HStack, Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
 import wavesImg from 'assets/img/waves2.svg';
 import {
   Sidebar,
   BoardColumn,
   TaskDetailsModal,
+  BurndownChartModal,
+  AddCardModal,
+  AddColumnModal,
 } from 'components/board-details';
 import { Header } from 'components/Header';
 import { Column } from 'interfaces/Column';
@@ -29,7 +32,6 @@ const mockedBoardColumns = [
         id: '4f96cd03-aa6a-425c-aa9c-3f00c6d8d5d2',
         assignedFor: 'eduardothsantos',
         title: 'Correção na landing page',
-        column: 'Tarefas',
         deadline: '2021-10-23',
         createdAt: '2021-10-22',
         effort: 4,
@@ -38,7 +40,6 @@ const mockedBoardColumns = [
         id: '378c3087-022f-43f6-9549-cd40b06165ed',
         assignedFor: 'jacobodecal',
         title: 'Construção da tela de login',
-        column: 'Tarefas',
         deadline: '2021-10-26',
         createdAt: '2021-10-23',
         effort: 2,
@@ -47,7 +48,6 @@ const mockedBoardColumns = [
         id: '22b8623b-58db-4400-b3fd-6d7ba196acfa',
         assignedFor: 'aguenaro',
         title: 'Mock API',
-        column: 'Tarefas',
         deadline: '2021-10-28',
         createdAt: '2021-10-17',
         effort: 2,
@@ -61,9 +61,25 @@ const mockedBoardColumns = [
         id: '3b4c97a7-148b-4a1e-9a69-7f8d01655934',
         assignedFor: 'eduardothsantos',
         title: 'Não consigo usar o chat',
-        column: 'Em execução',
         deadline: '2021-10-30',
         createdAt: '2021-10-12',
+        effort: 6,
+      },
+    ],
+  },
+  {
+    title: 'Em revisão',
+    tasks: [],
+  },
+  {
+    title: 'Finalizado',
+    tasks: [
+      {
+        id: 'cacd3745-cbb1-4ab0-84fd-ca1d5e7ecc55',
+        assignedFor: 'eduardothsantos',
+        title: 'Prototipagem',
+        deadline: '2021-10-20',
+        createdAt: '2021-10-10',
         effort: 6,
       },
     ],
@@ -72,14 +88,33 @@ const mockedBoardColumns = [
 
 const BoardDetails: NextPage = () => {
   resetServerContext();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenDetails,
+    onOpen: onOpenDetails,
+    onClose: onCloseDetails,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenGraph,
+    onOpen: onOpenGraph,
+    onClose: onCloseGraph,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAddCard,
+    onOpen: onOpenAddCard,
+    onClose: onCloseAddCard,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAddColumn,
+    onOpen: onOpenAddColumn,
+    onClose: onCloseAddColumn,
+  } = useDisclosure();
   const [selectedTask, setSelectedTask] = useState<Task>({} as Task);
   const [boardColumns, setBoardColumns] =
     useState<Column[]>(mockedBoardColumns);
 
   function openDetailsModal(task: Task) {
     setSelectedTask(task);
-    onOpen();
+    onOpenDetails();
   }
 
   function onDragEnd(result: DropResult) {
@@ -138,6 +173,8 @@ const BoardDetails: NextPage = () => {
 
       setBoardColumns([...newBoard]);
     } else {
+      if (finish.title === 'Finalizado') return;
+
       const startColumnTasks = Array.from(start.tasks);
 
       startColumnTasks.splice(index, 1);
@@ -171,12 +208,15 @@ const BoardDetails: NextPage = () => {
     <Box overflow="hidden" h="100vh">
       <Header />
       <TaskDetailsModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isOpenDetails}
+        onClose={onCloseDetails}
         selectedTask={selectedTask}
       />
+      <BurndownChartModal isOpen={isOpenGraph} onClose={onCloseGraph} />
+      <AddCardModal isOpen={isOpenAddCard} onClose={onCloseAddCard} />
+      <AddColumnModal isOpen={isOpenAddColumn} onClose={onCloseAddColumn} />
       <Flex h="calc(100% - 53px)" position="relative">
-        <Sidebar boardName="board name" />
+        <Sidebar boardName="board name" openGraph={onOpenGraph} />
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
             droppableId="all-columns"
@@ -185,10 +225,12 @@ const BoardDetails: NextPage = () => {
           >
             {(provided: DroppableProvided) => (
               <Flex
+                id="board-columns"
                 align="start"
-                justify="between"
+                justify="space-between"
                 p="20px 30px 0"
                 spacing={7}
+                overflowX="auto"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -199,31 +241,21 @@ const BoardDetails: NextPage = () => {
                     index={index}
                     tasks={column.tasks}
                     onClick={(task: Task) => openDetailsModal(task)}
+                    addCard={() => onOpenAddCard()}
                   />
                 ))}
                 {provided.placeholder}
                 <Flex
                   align="center"
+                  justify="center"
                   bg="blue.800"
                   borderRadius="30px"
-                  w="300px"
+                  minW="300px"
                   p={4}
+                  onClick={onOpenAddColumn}
                 >
                   <Icon as={MdAdd} color="white" mr={2} />
-                  <Text
-                    color="white"
-                    fontSize="sm"
-                    isTruncated
-                    onClick={() =>
-                      setBoardColumns([
-                        ...boardColumns,
-                        {
-                          title: `Nova coluna ${new Date().getMilliseconds()}`,
-                          tasks: [],
-                        },
-                      ])
-                    }
-                  >
+                  <Text color="white" fontSize="sm" isTruncated>
                     adicionar coluna
                   </Text>
                 </Flex>
