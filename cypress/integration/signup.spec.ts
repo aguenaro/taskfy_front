@@ -42,7 +42,7 @@ describe('Sign Up', () => {
       .should('have.text', 'Senhas diferentes');
   });
 
-  it('create an account', () => {
+  it('Create an account', () => {
     cy.get('#firstName').type('firstname');
     cy.get('#lastName').type('lastname');
     cy.get('#username').type('username');
@@ -52,6 +52,6 @@ describe('Sign Up', () => {
     cy.contains('criar minha conta!').click();
 
     cy.wait(10000);
-    cy.url().should('include', '/signup');
+    cy.url().should('include', '/signin');
   });
 });
