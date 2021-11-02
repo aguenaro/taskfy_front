@@ -20,25 +20,25 @@ describe('Create board modal', () => {
       .and('contain.text', 'Correção na landing page');
   });
 
-  it('Move card between columns', () => {
-    // cy.get('[data-rbd-draggable-id="Correção na landing page"]')
-    //   .focus()
-    //   .trigger('keydown', { keyCode: 27 })
-    //   .trigger('keydown', { keyCode: 39, force: true })
-    //   // finishing before the movement time is fine - but this looks nice
-    //   .wait(200)
-    //   .trigger('keydown', { keyCode: 27, force: true });
+  // it('Move card between columns', () => {
+  //   // cy.get('[data-rbd-draggable-id="Correção na landing page"]')
+  //   //   .focus()
+  //   //   .trigger('keydown', { keyCode: 27 })
+  //   //   .trigger('keydown', { keyCode: 39, force: true })
+  //   //   // finishing before the movement time is fine - but this looks nice
+  //   //   .wait(200)
+  //   //   .trigger('keydown', { keyCode: 27, force: true });
 
-    // cy.get('[data-rbd-droppable-id="Em execução"]')
-    //   .trigger('drop')
-    //   .trigger('dragend');
+  //   // cy.get('[data-rbd-droppable-id="Em execução"]')
+  //   //   .trigger('drop')
+  //   //   .trigger('dragend');
 
-    // cy.get('[data-rbd-draggable-id="Correção na landing page"]').drag(
-    //   '[data-rbd-droppable-id="Em execução"]'
-    // );
+  //   // cy.get('[data-rbd-draggable-id="Correção na landing page"]').drag(
+  //   //   '[data-rbd-droppable-id="Em execução"]'
+  //   // );
 
-    cy.get('[data-rbd-draggable-id="Correção na landing page"]').drag(
-      '[data-rbd-droppable-id="Em execução"]'
-    );
-  });
+  //   cy.get('[data-rbd-draggable-id="Correção na landing page"]').drag(
+  //     '[data-rbd-droppable-id="Em execução"]'
+  //   );
+  // });
 });

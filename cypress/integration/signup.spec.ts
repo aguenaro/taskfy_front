@@ -4,41 +4,54 @@ describe('Sign Up', () => {
   });
 
   it('Invalid all sign up form', () => {
-    cy.contains('Create my account!').click();
+    cy.contains('criar minha conta!').click();
 
     cy.get('#field-1-feedback')
       .should('be.visible')
-      .should('have.text', 'First name is required');
+      .should('have.text', 'Campo obrigatório');
     cy.get('#field-2-feedback')
       .should('be.visible')
-      .should('have.text', 'Last name is required');
+      .should('have.text', 'Campo obrigatório');
     cy.get('#field-3-feedback')
       .should('be.visible')
-      .should('have.text', 'Username is required');
+      .should('have.text', 'Campo obrigatório');
     cy.get('#field-4-feedback')
       .should('be.visible')
-      .should('have.text', 'Email is required');
+      .should('have.text', 'Campo obrigatório');
     cy.get('#field-5-feedback')
       .should('be.visible')
-      .should('have.text', 'Password is required');
+      .should('have.text', 'Campo obrigatório');
   });
 
   it('Input an invalid email', () => {
-    cy.get('#email').type('invalid-email');
-    cy.contains('Create my account!').click();
+    cy.get('#email').type('Email inválido');
+    cy.contains('criar minha conta!').click();
 
     cy.get('#field-4-feedback')
       .should('be.visible')
-      .should('have.text', 'Invalid email');
+      .should('have.text', 'Email inválido');
   });
 
   it('Input differents password', () => {
     cy.get('#password').type('password1');
-    cy.get('#password').type('password2');
-    cy.contains('Create my account!').click();
+    cy.get('#passwordConfirmation').type('password2');
+    cy.contains('criar minha conta!').click();
 
     cy.get('#field-6-feedback')
       .should('be.visible')
-      .should('have.text', 'Passwords should be equal');
+      .should('have.text', 'Senhas diferentes');
+  });
+
+  it('create an account', () => {
+    cy.get('#firstName').type('firstname');
+    cy.get('#lastName').type('lastname');
+    cy.get('#username').type('username');
+    cy.get('#email').type('email@gmail.com');
+    cy.get('#password').type('password');
+    cy.get('#passwordConfirmation').type('password');
+    cy.contains('criar minha conta!').click();
+
+    cy.wait(5000);
+    cy.url().should('include', '/signup');
   });
 });
