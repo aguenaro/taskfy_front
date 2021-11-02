@@ -29,7 +29,7 @@ describe('Sign Up', () => {
 
     cy.get('.chakra-button').click();
 
-    cy.wait(5000);
+    cy.wait(10000);
     cy.url().should('include', '/boards');
   });
 });

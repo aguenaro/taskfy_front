@@ -51,7 +51,7 @@ describe('Sign Up', () => {
     cy.get('#passwordConfirmation').type('password');
     cy.contains('criar minha conta!').click();
 
-    cy.wait(5000);
+    cy.wait(10000);
     cy.url().should('include', '/signup');
   });
 });
