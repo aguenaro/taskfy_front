@@ -13,7 +13,7 @@ export const SignupOAuth = () => {
       borderRadius="50px"
     >
       <Text fontSize="xl" color="white" textAlign="center" mb={5}>
-        Create account using
+        Crie sua conta com
       </Text>
       <Divider />
       <Box h="520px">

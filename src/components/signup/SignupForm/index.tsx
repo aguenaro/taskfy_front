@@ -1,8 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { Flex, Button, Box, Text, Divider } from '@chakra-ui/react';
+import { Flex, Button, Box, Text, Divider, useToast } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Forms';
+import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
 interface CreateAccountFormData {
@@ -15,26 +16,36 @@ interface CreateAccountFormData {
 }
 
 const createAccountSchema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
-  username: yup.string().required('Username is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  password: yup.string().required('Password is required'),
+  firstName: yup.string().required('Campo obrigatório'),
+  lastName: yup.string().required('Campo obrigatório'),
+  username: yup.string().required('Campo obrigatório'),
+  email: yup.string().email('Email inválido').required('Campo obrigatório'),
+  password: yup.string().required('Campo obrigatório'),
   passwordConfirmation: yup
     .string()
-    .oneOf([yup.ref('password'), null], 'Passwords should be equal'),
+    .oneOf([yup.ref('password'), null], 'Senhas diferentes'),
 });
 
 export const SignupForm = () => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createAccountSchema),
   });
+  const { push } = useRouter();
+  const toast = useToast();
 
   const handleCreateAccount: SubmitHandler<CreateAccountFormData> = async (
     values
   ) => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log(values);
+
+    push('/signin');
+    toast({
+      title: 'Conta criada com sucesso',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
   };
 
   return (
@@ -47,7 +58,7 @@ export const SignupForm = () => {
       borderRadius="50px"
     >
       <Text fontSize="xl" color="white" textAlign="center" mb={5}>
-        Create your account now
+        Crie sua conta agora
       </Text>
       <Divider />
       <Flex
@@ -63,7 +74,7 @@ export const SignupForm = () => {
         <Flex align="stretch" justify="space-between">
           <Box w="48%">
             <Input
-              label="first_name"
+              label="nome"
               type="text"
               isRequired
               error={formState.errors.firstName}
@@ -72,7 +83,7 @@ export const SignupForm = () => {
           </Box>
           <Box w="48%">
             <Input
-              label="last_name"
+              label="sobrenome"
               type="text"
               isRequired
               error={formState.errors.lastName}
@@ -97,7 +108,7 @@ export const SignupForm = () => {
         <Flex align="stretch" justify="space-between">
           <Box w="48%">
             <Input
-              label="password"
+              label="senha"
               type="password"
               isRequired
               error={formState.errors.password}
@@ -106,7 +117,7 @@ export const SignupForm = () => {
           </Box>
           <Box w="48%">
             <Input
-              label="password confirmation"
+              label="confirmar senha"
               type="password"
               isRequired
               error={formState.errors.passwordConfirmation}
@@ -116,14 +127,12 @@ export const SignupForm = () => {
         </Flex>
         <Button
           type="submit"
-          bg="green.500"
+          colorScheme="green"
           w="50%"
-          color="#FFFFFF"
           m="20px auto"
-          _hover={{ background: '#2A8C3C' }}
           isLoading={formState.isSubmitting}
         >
-          Create my account!
+          criar minha conta!
         </Button>
       </Flex>
     </Box>
