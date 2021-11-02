@@ -1,8 +1,9 @@
 import { FaGithub } from 'react-icons/fa';
 
-import { Box, Flex, Text, Icon, Link } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import taskfyLogo from 'assets/img/taskfy_logo_branco.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const Footer = () => {
   return (

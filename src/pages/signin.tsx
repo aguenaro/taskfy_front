@@ -1,18 +1,19 @@
-import { Box, Flex, Text, Divider, Button, Icon, Link } from '@chakra-ui/react';
 import { FaGithub, FaGoogle, FaApple } from 'react-icons/fa';
-import { Input } from 'components/Forms';
+
+import { Box, Flex, Text, Divider, Button, Icon } from '@chakra-ui/react';
 import { Footer } from 'components/Footer';
-import { Header } from 'components/Header';
-import { NextPage } from 'next';
-import logo from '../assets/img/taskfy_logo_branco.png';
-import Image from 'next/image';
+import { Input } from 'components/Forms';
 import { HorizontalDivision } from 'components/signin/HorizontalDivision';
-import { SigninOAuth } from 'components/signin/SigninOAuth';
+import { NextPage } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import logo from '../assets/img/taskfy_logo_branco.png';
 
 const SignInPage: NextPage = () => {
   return (
     <Flex direction="column" align="center">
-      <Box marginTop="50px">
+      <Box marginTop="50px" cursor="pointer">
         <Link href="/">
           <Image src={logo} alt="logo taskfy branca" />
         </Link>
@@ -27,7 +28,7 @@ const SignInPage: NextPage = () => {
         marginBottom="50px"
       >
         <Text fontSize="xl" color="white" textAlign="center" mb={5}>
-          log into taskfy!
+          entre no taskfy!
         </Text>
         <Divider marginBottom="30px" />
         <Input
@@ -46,11 +47,11 @@ const SignInPage: NextPage = () => {
           marginBottom="0px"
           _hover={{ background: '#2A8C3C' }}
         >
-          login
+          entre
         </Button>
         <HorizontalDivision />
         <Text fontSize="xl" color="white" textAlign="center" mb={5}>
-          log in with
+          entre com
         </Text>
         <Box h="100px">
           <Flex
@@ -70,11 +71,13 @@ const SignInPage: NextPage = () => {
             color="white"
             textAlign="center"
           >
-            Don’t have an account?{' '}
+            Não possui conta?{' '}
             <Link href="/signup">
-              <text style={{ color: 'blue' }}>Create</text>
-            </Link>{' '}
-            one right now!
+              <Text style={{ color: 'blue' }} cursor="pointer">
+                Crie
+              </Text>
+            </Link>
+            uma agora mesmo!
           </Text>
         </Box>
       </Box>
