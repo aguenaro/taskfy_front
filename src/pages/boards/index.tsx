@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 
-import { Box, Text, Icon, HStack, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, Icon, HStack, useDisclosure, Flex } from '@chakra-ui/react';
 import wavesImg from 'assets/img/waves.svg';
-import { BoardCard, CreateBoardModal } from 'components/boards';
-import { Footer } from 'components/Footer';
+import { BoardCard, CreateBoardModal, EmptyBoard } from 'components/boards';
 import { Header } from 'components/Header';
 import { Board } from 'interfaces/Board';
 import mockedBoards from 'mock/boards.json';
@@ -16,7 +15,7 @@ const Boards: NextPage = () => {
 
   const [boards, setBoards] = useState<Board[]>(mockedBoards);
   return (
-    <Box overflowX="hidden">
+    <Box overflow="hidden">
       <Header />
       <CreateBoardModal
         isOpen={isOpen}
@@ -27,11 +26,11 @@ const Boards: NextPage = () => {
         <Box w="75%" m="auto">
           <HStack spacing={7}>
             <Text color="white" fontSize="2xl">
-              personal boards
+              seus quadros
             </Text>
             <Icon as={MdAdd} color="white" w={7} h={7} onClick={onOpen} />
           </HStack>
-          <HStack spacing={8} my={7}>
+          <Flex align="center" flexWrap="wrap" spacing={8} my={7}>
             {boards.map((board, index) => (
               <BoardCard
                 key={index}
@@ -39,25 +38,13 @@ const Boards: NextPage = () => {
                 bgColor={board.bgColor}
               />
             ))}
-          </HStack>
-          <HStack spacing={7}>
-            <Text color="white" fontSize="2xl">
-              your company boards
-            </Text>
-            <Icon as={MdAdd} color="white" w={7} h={7} onClick={onOpen} />
-          </HStack>
-          <HStack spacing={8} my={7}>
-            <BoardCard title="board 1" bgColor="green.600" />
-            <BoardCard title="board 2" bgColor="blue.800" />
-            <BoardCard title="board 3" bgColor="red.900" />
-          </HStack>
+            <EmptyBoard openModal={onOpen} />
+          </Flex>
         </Box>
         <Box position="absolute" bottom="-5px" w="100vw">
           <Image src={wavesImg} alt="Ondas" />
         </Box>
       </Box>
-
-      <Footer />
     </Box>
   );
 };

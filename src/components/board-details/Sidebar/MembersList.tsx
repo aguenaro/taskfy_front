@@ -1,4 +1,4 @@
-import { MdChat } from 'react-icons/md';
+import { MdChat, MdPersonAdd } from 'react-icons/md';
 
 import { Box, Text, Flex, Stack, Avatar, Icon } from '@chakra-ui/react';
 
@@ -13,7 +13,7 @@ export const MembersList = ({ members }: MembersListProps) => {
   return (
     <Box>
       <Text color="white" fontSize="sm" mb={3}>
-        members
+        membros
       </Text>
       <Stack spacing={3}>
         {members.map((member) => (
@@ -38,6 +38,12 @@ export const MembersList = ({ members }: MembersListProps) => {
             <Icon cursor="pointer" as={MdChat} color="white" />
           </Flex>
         ))}
+        <Flex align="center" justify="center">
+          <Icon cursor="pointer" as={MdPersonAdd} color="white" />
+          <Text fontSize="smaller" color="white" ml={2}>
+            adicionar membro
+          </Text>
+        </Flex>
       </Stack>
     </Box>
   );

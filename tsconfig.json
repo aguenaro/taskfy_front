@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["cypress"],
+    "types": ["cypress", "@4tw/cypress-drag-drop"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
