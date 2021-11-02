@@ -1,6 +1,7 @@
-import { MdNotifications } from 'react-icons/md';
+import { MdNotifications, MdOutlineSpaceDashboard } from 'react-icons/md';
 
-import { HStack, Text, Button, Icon, Link } from '@chakra-ui/react';
+import { HStack, Text, Button, Icon } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { AddMenu } from './AddMenu';
@@ -10,18 +11,18 @@ export const NavigationMenu = () => {
   const { route, push } = useRouter();
 
   // const externalPaths = ['/', '/signin', '/signup'];
-  const internalPaths = ['/boards', '/boards/[boardId]'];
+  const internalPaths = ['/boards', '/boards/[boardId]', '/profile'];
 
   const ExternalMenu = () => {
     return (
       <>
         <Link href="/">
-          <Text fontSize="xl" color="white">
+          <Text fontSize="xl" color="white" cursor="pointer">
             home
           </Text>
         </Link>
         <Link href="/signin">
-          <Text fontSize="xl" color="white">
+          <Text fontSize="xl" color="white" cursor="pointer">
             sign in
           </Text>
         </Link>
@@ -46,6 +47,15 @@ export const NavigationMenu = () => {
   const InternalMenu = () => {
     return (
       <>
+        <Link href="/boards">
+          <Icon
+            as={MdOutlineSpaceDashboard}
+            color="white"
+            w={7}
+            h={7}
+            cursor="pointer"
+          />
+        </Link>
         <Icon as={MdNotifications} color="white" w={7} h={7} />
         {/* <AddMenu /> */}
         <ProfileMenu />

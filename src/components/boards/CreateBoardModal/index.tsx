@@ -23,12 +23,10 @@ interface CreateBoardModalProps {
 
 interface CreateBoardFormData {
   boardName: string;
-  projectName?: string;
 }
 
 const createBoardSchema = yup.object().shape({
   boardName: yup.string().required('Board name is required'),
-  gitProject: yup.string(),
 });
 
 export const CreateBoardModal = ({
@@ -62,7 +60,7 @@ export const CreateBoardModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="white">create board</ModalHeader>
+        <ModalHeader color="white">Criar quadro</ModalHeader>
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
         <ModalBody>
           <Flex
@@ -73,7 +71,7 @@ export const CreateBoardModal = ({
           >
             <Input
               isRequired
-              label="board name"
+              label="Nome"
               type="text"
               error={formState.errors.boardName}
               {...register('boardName')}
@@ -84,10 +82,10 @@ export const CreateBoardModal = ({
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}
-              loadingText="Creating"
+              loadingText="Criando"
               spinnerPlacement="end"
             >
-              create project
+              Criar quadro
             </Button>
           </Flex>
         </ModalBody>

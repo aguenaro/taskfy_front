@@ -1,6 +1,7 @@
-import { Flex, Link } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import taskfyLogo from 'assets/img/taskfy_logo.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { NavigationMenu } from './NavigationMenu';
 

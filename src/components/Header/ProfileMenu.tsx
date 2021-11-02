@@ -40,7 +40,7 @@ export const ProfileMenu = () => {
       <MenuList bg="#040D30">
         <MenuItem isDisabled cursor="default">
           <Text color="white" fontSize="xs">
-            Signed in as
+            Loggado como
           </Text>
         </MenuItem>
         <MenuItem isDisabled cursor="default">
@@ -52,14 +52,15 @@ export const ProfileMenu = () => {
         <MenuItem
           _hover={{ bg: 'grey' }}
           icon={<AiOutlineUser color="white" />}
+          onClick={() => push('profile')}
         >
           <Text color="white" fontSize="xs">
-            your profile
+            seu perfil
           </Text>
         </MenuItem>
         <MenuItem _hover={{ bg: 'grey' }} icon={<MdSettings color="white" />}>
           <Text color="white" fontSize="xs">
-            account settings
+            configurações da conta
           </Text>
         </MenuItem>
         <MenuDivider />
@@ -69,7 +70,7 @@ export const ProfileMenu = () => {
           onClick={() => push('/signin')}
         >
           <Text color="white" fontSize="xs">
-            sign out
+            sair
           </Text>
         </MenuItem>
       </MenuList>
