@@ -1,33 +1,18 @@
 import { FaGithub, FaGoogle, FaApple } from 'react-icons/fa';
 
-import { Flex, Icon, Box, Text, Divider } from '@chakra-ui/react';
+import { Flex, Icon, Box, Text } from '@chakra-ui/react';
 
 export const SigninOAuth = () => {
   return (
-    <Box
-      w="40%"
-      maxW="725px"
-      maxH="629px"
-      bg="blue.1000"
-      p="20px 30px"
-      borderRadius="50px"
-    >
+    <Box>
       <Text fontSize="xl" color="white" textAlign="center" mb={5}>
-        log in with
+        entre com
       </Text>
-      <Box h="520px">
-        <Flex
-          align="center"
-          justify="space-around"
-          w="100%"
-          h="100%"
-          p="0 75px"
-        >
-          <Icon as={FaGithub} color="white" w="80px" h="80px" />
-          <Icon as={FaGoogle} color="white" w="80px" h="80px" />
-          <Icon as={FaApple} color="white" w="80px" h="80px" />
-        </Flex>
-      </Box>
+      <Flex align="center" justify="space-around" w="100%" h="100%" p="0 50px">
+        <Icon as={FaGithub} color="white" w="60px" h="60px" />
+        <Icon as={FaGoogle} color="white" w="60px" h="60px" />
+        <Icon as={FaApple} color="white" w="60px" h="60px" />
+      </Flex>
     </Box>
   );
 };
