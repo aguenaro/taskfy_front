@@ -43,7 +43,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     // const token = localStorage.getItem('@Taskfy:token');
     const cookies = parseCookies(null);
 
+    console.log(cookies);
     if (cookies['@Taskfy:token']) {
+      console.log(cookies['@Taskfy:token']);
       api.defaults.headers.authorization = `JWT ${cookies['@Taskfy:token']}`;
       // return { user: JSON.parse(user), token };
 

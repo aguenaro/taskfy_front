@@ -1,4 +1,7 @@
 export interface Board {
-  title: string;
-  bgColor: string;
+  id: string;
+  name: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
 }
