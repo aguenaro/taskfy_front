@@ -4,6 +4,7 @@ export interface Task {
   listId: string;
   name: string;
   stressPoints: number;
+  createdAt: string;
   updatedAt: string;
   userId: string;
 }

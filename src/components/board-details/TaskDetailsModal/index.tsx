@@ -12,9 +12,11 @@ import {
 } from '@chakra-ui/react';
 import { parseISO, format } from 'date-fns';
 import { Task } from 'interfaces/Task';
+import { User } from 'interfaces/User';
 
 interface TaskDetailsModalProps {
   isOpen: boolean;
+  membersList: User[];
   selectedTask?: Task;
   onClose: () => void;
 }
@@ -23,7 +25,9 @@ export const TaskDetailsModal = ({
   isOpen,
   onClose,
   selectedTask,
+  membersList,
 }: TaskDetailsModalProps) => {
+  const user = membersList.find((member) => member.id === selectedTask?.userId);
   return (
     <Modal
       isOpen={isOpen}
@@ -34,14 +38,14 @@ export const TaskDetailsModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="white">{selectedTask?.title}</ModalHeader>
+        <ModalHeader color="white">{selectedTask?.name}</ModalHeader>
 
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
-        {selectedTask?.title && (
+        {user?.firstName && selectedTask?.dueDate && (
           <ModalBody mb={4}>
             <Flex align="center" justify="space-between" mt={10}>
               <Text color="white">Alocado para</Text>
-              <Text color="white">{selectedTask.assignedFor}</Text>
+              <Text color="white">{`${user.firstName} ${user.lastName}`}</Text>
             </Flex>
             <Divider my={3} />
 
@@ -56,14 +60,14 @@ export const TaskDetailsModal = ({
             <Flex align="center" justify="space-between">
               <Text color="white">Prazo</Text>
               <Text color="white">
-                {format(parseISO(selectedTask.deadline), 'dd/MM/yyy')}
+                {format(parseISO(selectedTask.dueDate), 'dd/MM/yyy')}
               </Text>
             </Flex>
             <Divider my={3} />
 
             <Flex align="center" justify="space-between">
               <Text color="white">Pontos de esforços</Text>
-              <Text color="white">{selectedTask.effort}</Text>
+              <Text color="white">{selectedTask.stressPoints}</Text>
             </Flex>
           </ModalBody>
         )}

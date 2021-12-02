@@ -183,6 +183,7 @@ const BoardDetails: NextPage = () => {
         isOpen={isOpenDetails}
         onClose={onCloseDetails}
         selectedTask={selectedTask}
+        membersList={boardDetails.users ?? []}
       />
       <BurndownChartModal isOpen={isOpenGraph} onClose={onCloseGraph} />
       <AddCardModal
