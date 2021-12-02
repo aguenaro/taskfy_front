@@ -26,6 +26,7 @@ import * as yup from 'yup';
 interface AddCardModalProps extends ModalProps {
   members: User[];
   columns: Column[];
+  refetchBoard: () => void;
 }
 
 interface CreateCardFormData {
@@ -49,6 +50,7 @@ export const AddCardModal = ({
   onClose,
   columns,
   members,
+  refetchBoard,
 }: AddCardModalProps) => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createCardSchema),
@@ -65,6 +67,7 @@ export const AddCardModal = ({
       name: values.name,
       dueDate: format(values.dueDate, 'yyyy-MM-dd'),
       stressPoints: values.stressPoints,
+      taskAssignedId: values.taskAssignedId,
     };
 
     await api.post<IResponse<Task>>(
@@ -78,7 +81,7 @@ export const AddCardModal = ({
       position: 'top-right',
       isClosable: true,
     });
-
+    refetchBoard();
     onClose();
   };
 

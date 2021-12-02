@@ -20,7 +20,9 @@ import { useRouter } from 'next/router';
 import api from 'services/api';
 import * as yup from 'yup';
 
-interface AddColumnModalProps extends ModalProps {}
+interface AddColumnModalProps extends ModalProps {
+  refetchBoard: () => void;
+}
 
 interface CreateColumnFormData {
   name: string;
@@ -30,7 +32,11 @@ const createColumnSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
 });
 
-export const AddColumnModal = ({ isOpen, onClose }: AddColumnModalProps) => {
+export const AddColumnModal = ({
+  isOpen,
+  onClose,
+  refetchBoard,
+}: AddColumnModalProps) => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createColumnSchema),
   });
@@ -54,6 +60,7 @@ export const AddColumnModal = ({ isOpen, onClose }: AddColumnModalProps) => {
       isClosable: true,
     });
 
+    refetchBoard();
     onClose();
   };
 

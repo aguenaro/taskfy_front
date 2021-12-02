@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   DragDropContext,
   resetServerContext,
@@ -29,68 +29,6 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import api from 'services/api';
-
-const mockedBoardColumns = [
-  {
-    title: 'Tarefas',
-    tasks: [
-      {
-        id: '4f96cd03-aa6a-425c-aa9c-3f00c6d8d5d2',
-        assignedFor: 'eduardothsantos',
-        title: 'Correção na landing page',
-        deadline: '2021-10-23',
-        createdAt: '2021-10-22',
-        effort: 4,
-      },
-      {
-        id: '378c3087-022f-43f6-9549-cd40b06165ed',
-        assignedFor: 'jacobodecal',
-        title: 'Construção da tela de login',
-        deadline: '2021-10-26',
-        createdAt: '2021-10-23',
-        effort: 2,
-      },
-      {
-        id: '22b8623b-58db-4400-b3fd-6d7ba196acfa',
-        assignedFor: 'aguenaro',
-        title: 'Mock API',
-        deadline: '2021-10-28',
-        createdAt: '2021-10-17',
-        effort: 2,
-      },
-    ],
-  },
-  {
-    title: 'Em execução',
-    tasks: [
-      {
-        id: '3b4c97a7-148b-4a1e-9a69-7f8d01655934',
-        assignedFor: 'eduardothsantos',
-        title: 'Não consigo usar o chat',
-        deadline: '2021-10-30',
-        createdAt: '2021-10-12',
-        effort: 6,
-      },
-    ],
-  },
-  {
-    title: 'Em revisão',
-    tasks: [],
-  },
-  {
-    title: 'Finalizado',
-    tasks: [
-      {
-        id: 'cacd3745-cbb1-4ab0-84fd-ca1d5e7ecc55',
-        assignedFor: 'eduardothsantos',
-        title: 'Prototipagem',
-        deadline: '2021-10-20',
-        createdAt: '2021-10-10',
-        effort: 6,
-      },
-    ],
-  },
-];
 
 interface BoardDetailsResponse extends Board {
   lists: Column[];
@@ -130,19 +68,17 @@ const BoardDetails: NextPage = () => {
 
   const { boardId } = router.query;
 
-  useEffect(() => {
-    const getBoardDetails = async () => {
-      if (boardId) {
-        const { data: response } = await api.get<
-          IResponse<BoardDetailsResponse>
-        >(`/boards/${boardId}`);
-        setBoardDetails(response.data);
-        setBoardColumns(response.data.lists);
-      }
-    };
-
-    getBoardDetails();
+  const getBoardDetails = useCallback(async () => {
+    const { data: response } = await api.get<IResponse<BoardDetailsResponse>>(
+      `/boards/${boardId}`
+    );
+    setBoardDetails(response.data);
+    setBoardColumns(response.data.lists);
   }, [boardId]);
+
+  useEffect(() => {
+    if (boardId) getBoardDetails();
+  }, [boardId, getBoardDetails]);
 
   function openDetailsModal(task: Task) {
     setSelectedTask(task);
@@ -192,7 +128,7 @@ const BoardDetails: NextPage = () => {
       newColumnTasks.splice(
         destination.index,
         0,
-        start.tasks.find((task) => task.title === draggableId) ?? ({} as Task)
+        start.tasks.find((task) => task.name === draggableId) ?? ({} as Task)
       );
 
       const startIndex = boardColumns
@@ -205,7 +141,7 @@ const BoardDetails: NextPage = () => {
 
       setBoardColumns([...newBoard]);
     } else {
-      if (finish.name === 'Finalizado') return;
+      if (finish.name === 'Finalizado' && !user.isAdmin) return;
 
       const startColumnTasks = Array.from(start.tasks);
 
@@ -216,7 +152,7 @@ const BoardDetails: NextPage = () => {
       finishColumnTasks.splice(
         destination.index,
         0,
-        start.tasks.find((task) => task.title === draggableId) ?? ({} as Task)
+        start.tasks.find((task) => task.name === draggableId) ?? ({} as Task)
       );
 
       const startIndex = boardColumns
@@ -254,8 +190,13 @@ const BoardDetails: NextPage = () => {
         onClose={onCloseAddCard}
         members={boardDetails.users ?? []}
         columns={boardDetails.lists ?? []}
+        refetchBoard={getBoardDetails}
       />
-      <AddColumnModal isOpen={isOpenAddColumn} onClose={onCloseAddColumn} />
+      <AddColumnModal
+        isOpen={isOpenAddColumn}
+        onClose={onCloseAddColumn}
+        refetchBoard={getBoardDetails}
+      />
       <Flex h="calc(100% - 53px)" position="relative">
         <Sidebar
           isManager={isManager}
