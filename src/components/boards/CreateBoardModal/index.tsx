@@ -28,7 +28,7 @@ interface CreateBoardFormData {
 }
 
 const createBoardSchema = yup.object().shape({
-  boardName: yup.string().required('Board name is required'),
+  boardName: yup.string().required('Campo obrigatório'),
 });
 
 export const CreateBoardModal = ({

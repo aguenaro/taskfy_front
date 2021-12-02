@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   DragDropContext,
   resetServerContext,
@@ -19,10 +19,16 @@ import {
   AddColumnModal,
 } from 'components/board-details';
 import { Header } from 'components/Header';
+import { useAuth } from 'hooks/useAuth';
+import { Board } from 'interfaces/Board';
 import { Column } from 'interfaces/Column';
+import { IResponse } from 'interfaces/IResponse';
 import { Task } from 'interfaces/Task';
+import { User } from 'interfaces/User';
 import { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import api from 'services/api';
 
 const mockedBoardColumns = [
   {
@@ -86,6 +92,12 @@ const mockedBoardColumns = [
   },
 ];
 
+interface BoardDetailsResponse extends Board {
+  lists: Column[];
+  manager: User[];
+  users: User[];
+}
+
 const BoardDetails: NextPage = () => {
   resetServerContext();
   const {
@@ -108,9 +120,29 @@ const BoardDetails: NextPage = () => {
     onOpen: onOpenAddColumn,
     onClose: onCloseAddColumn,
   } = useDisclosure();
+  const { user } = useAuth();
   const [selectedTask, setSelectedTask] = useState<Task>({} as Task);
-  const [boardColumns, setBoardColumns] =
-    useState<Column[]>(mockedBoardColumns);
+  const [boardColumns, setBoardColumns] = useState<Column[]>([]);
+  const [boardDetails, setBoardDetails] = useState<BoardDetailsResponse>(
+    {} as BoardDetailsResponse
+  );
+  const router = useRouter();
+
+  const { boardId } = router.query;
+
+  useEffect(() => {
+    const getBoardDetails = async () => {
+      if (boardId) {
+        const { data: response } = await api.get<
+          IResponse<BoardDetailsResponse>
+        >(`/boards/${boardId}`);
+        setBoardDetails(response.data);
+        setBoardColumns(response.data.lists);
+      }
+    };
+
+    getBoardDetails();
+  }, [boardId]);
 
   function openDetailsModal(task: Task) {
     setSelectedTask(task);
@@ -136,7 +168,7 @@ const BoardDetails: NextPage = () => {
       newColumnsOrder.splice(
         destination.index,
         0,
-        boardColumns.find((column) => column.title === draggableId) ??
+        boardColumns.find((column) => column.name === draggableId) ??
           ({} as Column)
       );
 
@@ -145,9 +177,9 @@ const BoardDetails: NextPage = () => {
       return;
     }
 
-    const start = boardColumns.find((board) => droppableId === board.title);
+    const start = boardColumns.find((board) => droppableId === board.name);
     const finish = boardColumns.find(
-      (board) => destination.droppableId === board.title
+      (board) => destination.droppableId === board.name
     );
 
     if (!start || !finish) return;
@@ -164,7 +196,7 @@ const BoardDetails: NextPage = () => {
       );
 
       const startIndex = boardColumns
-        .map((column) => column.title)
+        .map((column) => column.name)
         .indexOf(droppableId);
 
       const newBoard = Array.from(boardColumns);
@@ -173,7 +205,7 @@ const BoardDetails: NextPage = () => {
 
       setBoardColumns([...newBoard]);
     } else {
-      if (finish.title === 'Finalizado') return;
+      if (finish.name === 'Finalizado') return;
 
       const startColumnTasks = Array.from(start.tasks);
 
@@ -188,11 +220,11 @@ const BoardDetails: NextPage = () => {
       );
 
       const startIndex = boardColumns
-        .map((column) => column.title)
+        .map((column) => column.name)
         .indexOf(droppableId);
 
       const finishIndex = boardColumns
-        .map((column) => column.title)
+        .map((column) => column.name)
         .indexOf(destination.droppableId);
 
       const newBoard = Array.from(boardColumns);
@@ -204,6 +236,10 @@ const BoardDetails: NextPage = () => {
     }
   }
 
+  const isManager = !!boardDetails.manager?.filter(
+    (manager) => manager.id === user.id
+  ).length;
+
   return (
     <Box overflow="hidden" h="100vh">
       <Header />
@@ -213,10 +249,21 @@ const BoardDetails: NextPage = () => {
         selectedTask={selectedTask}
       />
       <BurndownChartModal isOpen={isOpenGraph} onClose={onCloseGraph} />
-      <AddCardModal isOpen={isOpenAddCard} onClose={onCloseAddCard} />
+      <AddCardModal
+        isOpen={isOpenAddCard}
+        onClose={onCloseAddCard}
+        members={boardDetails.users ?? []}
+        columns={boardDetails.lists ?? []}
+      />
       <AddColumnModal isOpen={isOpenAddColumn} onClose={onCloseAddColumn} />
       <Flex h="calc(100% - 53px)" position="relative">
-        <Sidebar boardName="board name" openGraph={onOpenGraph} />
+        <Sidebar
+          isManager={isManager}
+          membersList={boardDetails.users ?? []}
+          boardId={boardDetails.id}
+          boardName={boardDetails.name}
+          openGraph={onOpenGraph}
+        />
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
             droppableId="all-columns"
@@ -236,8 +283,8 @@ const BoardDetails: NextPage = () => {
               >
                 {boardColumns.map((column, index) => (
                   <BoardColumn
-                    key={column.title}
-                    title={column.title}
+                    key={column.name}
+                    title={column.name}
                     index={index}
                     tasks={column.tasks}
                     onClick={(task: Task) => openDetailsModal(task)}

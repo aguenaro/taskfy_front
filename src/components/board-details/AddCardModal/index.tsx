@@ -9,27 +9,78 @@ import {
   ModalCloseButton,
   Flex,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input, Select } from 'components/Forms';
+import { format } from 'date-fns';
+import { Column } from 'interfaces/Column';
+import { IResponse } from 'interfaces/IResponse';
 import { ModalProps } from 'interfaces/ModalProps';
+import { Task } from 'interfaces/Task';
+import { User } from 'interfaces/User';
+import { useRouter } from 'next/router';
+import api from 'services/api';
 import * as yup from 'yup';
 
-interface AddCardModalProps extends ModalProps {}
+interface AddCardModalProps extends ModalProps {
+  members: User[];
+  columns: Column[];
+}
 
 interface CreateCardFormData {
-  boardName: string;
+  name: string;
+  dueDate: Date;
+  stressPoints: number;
+  taskAssignedId: string;
+  listId: string;
 }
 
 const createCardSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
-  deadline: yup.date().required('Campo obrigatório'),
+  dueDate: yup.date().required('Campo obrigatório'),
+  stressPoints: yup.number().min(0).required('Campo obrigatório'),
+  taskAssignedId: yup.string().required('Campo obrigatório'),
+  listId: yup.string().required('Campo obrigatório'),
 });
 
-export const AddCardModal = ({ isOpen, onClose }: AddCardModalProps) => {
+export const AddCardModal = ({
+  isOpen,
+  onClose,
+  columns,
+  members,
+}: AddCardModalProps) => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createCardSchema),
   });
+
+  const toast = useToast();
+  const router = useRouter();
+  const { boardId } = router.query;
+
+  const handleCreateTask: SubmitHandler<CreateCardFormData> = async (
+    values
+  ) => {
+    const payload = {
+      name: values.name,
+      dueDate: format(values.dueDate, 'yyyy-MM-dd'),
+      stressPoints: values.stressPoints,
+    };
+
+    await api.post<IResponse<Task>>(
+      `/boards/${boardId}/lists/${values.listId}/tasks`,
+      payload
+    );
+
+    toast({
+      title: 'Tarefa criada com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
+
+    onClose();
+  };
 
   return (
     <Modal
@@ -48,7 +99,7 @@ export const AddCardModal = ({ isOpen, onClose }: AddCardModalProps) => {
           <Flex
             direction="column"
             as="form"
-            onSubmit={(data) => console.log(data)}
+            onSubmit={handleSubmit(handleCreateTask)}
             noValidate
           >
             <Input
@@ -62,38 +113,40 @@ export const AddCardModal = ({ isOpen, onClose }: AddCardModalProps) => {
               isRequired
               label="Prazo"
               type="date"
-              error={formState.errors.deadline}
-              {...register('deadline')}
+              error={formState.errors.dueDate}
+              {...register('dueDate')}
             />
             <Select
               isRequired
               label="Alocado para"
-              error={formState.errors.assignedFor}
-              options={[
-                { value: 1, label: 'eduardothsantos' },
-                { value: 2, label: 'aguenaro' },
-              ]}
-              {...register('assignedFor')}
+              error={formState.errors.taskAssignedId}
+              options={members.map((member) => {
+                return {
+                  value: member.id,
+                  label: `${member.firstName} ${member.lastName}`,
+                };
+              })}
+              {...register('taskAssignedId')}
             />
             <Select
               isRequired
               label="Status"
-              error={formState.errors.column}
-              options={[
-                { value: 1, label: 'Tarefas' },
-                { value: 2, label: 'Em execução' },
-              ]}
-              {...register('column')}
+              error={formState.errors.listId}
+              options={columns.map((column) => {
+                return { value: column.id, label: column.name };
+              })}
+              {...register('listId')}
             />
             <Input
               isRequired
               type="number"
               label="Pontos de esforço"
-              error={formState.errors.effort}
-              {...register('effort')}
+              error={formState.errors.stressPoints}
+              {...register('stressPoints')}
             />
 
             <Button
+              type="submit"
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}

@@ -1,15 +1,16 @@
-import { MdChat, MdPersonAdd } from 'react-icons/md';
+import { MdPersonAdd } from 'react-icons/md';
 
 import { Box, Text, Flex, Stack, Avatar, Icon } from '@chakra-ui/react';
+import { useAuth } from 'hooks/useAuth';
+import { User } from 'interfaces/User';
 
 interface MembersListProps {
-  members: {
-    username: string;
-    name: string;
-  }[];
+  members: User[];
+  isManager: boolean;
 }
 
-export const MembersList = ({ members }: MembersListProps) => {
+export const MembersList = ({ members, isManager }: MembersListProps) => {
+  const { user } = useAuth();
   return (
     <Box>
       <Text color="white" fontSize="sm" mb={3}>
@@ -25,7 +26,7 @@ export const MembersList = ({ members }: MembersListProps) => {
           >
             <Flex align="center">
               <Avatar
-                name={member.name}
+                name={`${member.firstName} ${member.lastName}`}
                 src={`https://avatars.githubusercontent.com/${member.username}`}
                 w={6}
                 h={6}
@@ -35,15 +36,21 @@ export const MembersList = ({ members }: MembersListProps) => {
                 {member.username}
               </Text>
             </Flex>
-            <Icon cursor="pointer" as={MdChat} color="white" />
+            {member.id !== user.id && (
+              <Text color="red" fontSize="x-small" ml={1}>
+                Remover
+              </Text>
+            )}
           </Flex>
         ))}
-        <Flex align="center" justify="center">
-          <Icon cursor="pointer" as={MdPersonAdd} color="white" />
-          <Text fontSize="smaller" color="white" ml={2}>
-            adicionar membro
-          </Text>
-        </Flex>
+        {isManager && (
+          <Flex cursor="pointer" align="center" justify="center">
+            <Icon as={MdPersonAdd} color="white" />
+            <Text fontSize="smaller" color="white" ml={2}>
+              adicionar membro
+            </Text>
+          </Flex>
+        )}
       </Stack>
     </Box>
   );

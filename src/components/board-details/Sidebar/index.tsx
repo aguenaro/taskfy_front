@@ -1,4 +1,4 @@
-import { MdEdit, MdChat } from 'react-icons/md';
+import { MdEdit } from 'react-icons/md';
 import { VscGraphLine } from 'react-icons/vsc';
 
 import {
@@ -9,14 +9,21 @@ import {
   Text,
   Button,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
-import { parseISO, format } from 'date-fns';
+import { useAuth } from 'hooks/useAuth';
+import { User } from 'interfaces/User';
+import { useRouter } from 'next/router';
+import api from 'services/api';
 
 import { MembersList } from './MembersList';
 
 interface SidebarProps {
   boardName: string;
+  boardId: string;
   openGraph: () => void;
+  isManager: boolean;
+  membersList: User[];
 }
 
 const members = [
@@ -25,7 +32,41 @@ const members = [
   { username: 'jacobodecal', name: 'Jacobo Soldra' },
 ];
 
-export const Sidebar = ({ boardName, openGraph }: SidebarProps) => {
+export const Sidebar = ({
+  boardName,
+  openGraph,
+  boardId,
+  isManager,
+  membersList,
+}: SidebarProps) => {
+  const { user } = useAuth();
+  const router = useRouter();
+  const toast = useToast();
+
+  async function onLeave() {
+    await api.delete(`/boards/${boardId}/user/${user.id}`);
+    toast({
+      title: 'Membro removido com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
+
+    router.push('/boards');
+  }
+
+  async function onDelete() {
+    await api.delete(`/boards/${boardId}`);
+    toast({
+      title: 'Quadro deletado com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
+
+    router.push('/boards');
+  }
+
   return (
     <Box
       minW="20vw"
@@ -47,8 +88,8 @@ export const Sidebar = ({ boardName, openGraph }: SidebarProps) => {
         justify="space-between"
         m="10px 20px 0"
       >
-        <MembersList members={members} />
-        <Stack spacing={4}>
+        <MembersList members={membersList} isManager={isManager} />
+        {/* <Stack spacing={4}>
           <Box>
             <Text color="white" fontSize="small">
               Início
@@ -65,7 +106,7 @@ export const Sidebar = ({ boardName, openGraph }: SidebarProps) => {
               {format(parseISO('2021-12-01'), 'dd/MM/yyyy')}
             </Text>
           </Box>
-        </Stack>
+        </Stack> */}
         <Flex
           align="center"
           justify="center"
@@ -78,24 +119,30 @@ export const Sidebar = ({ boardName, openGraph }: SidebarProps) => {
           </Text>
         </Flex>
         <Stack spacing={4} m="0 20px">
-          <Button
-            w="100%"
-            variant="outline"
-            colorScheme="red"
-            borderRadius="20px"
-            size="sm"
-          >
-            sair
-          </Button>
-          <Button
-            w="100%"
-            variant="outline"
-            colorScheme="red"
-            borderRadius="20px"
-            size="sm"
-          >
-            excluir
-          </Button>
+          {!isManager && (
+            <Button
+              w="100%"
+              variant="outline"
+              colorScheme="red"
+              borderRadius="20px"
+              size="sm"
+              onClick={onLeave}
+            >
+              sair
+            </Button>
+          )}
+          {isManager && (
+            <Button
+              w="100%"
+              variant="outline"
+              colorScheme="red"
+              borderRadius="20px"
+              size="sm"
+              onClick={onDelete}
+            >
+              excluir
+            </Button>
+          )}
         </Stack>
       </Flex>
     </Box>

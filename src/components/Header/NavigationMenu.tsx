@@ -1,17 +1,19 @@
+import { FaUserFriends } from 'react-icons/fa';
 import { MdNotifications, MdOutlineSpaceDashboard } from 'react-icons/md';
 
 import { HStack, Text, Button, Icon } from '@chakra-ui/react';
+import { useAuth } from 'hooks/useAuth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { AddMenu } from './AddMenu';
 import { ProfileMenu } from './ProfileMenu';
 
 export const NavigationMenu = () => {
   const { route, push } = useRouter();
+  const { user } = useAuth();
 
   // const externalPaths = ['/', '/signin', '/signup'];
-  const internalPaths = ['/boards', '/boards/[boardId]', '/profile'];
+  const internalPaths = ['/boards', '/boards/[boardId]', '/profile', '/users'];
 
   const ExternalMenu = () => {
     return (
@@ -47,6 +49,17 @@ export const NavigationMenu = () => {
   const InternalMenu = () => {
     return (
       <>
+        {user?.isAdmin && (
+          <Link href="/users">
+            <Icon
+              as={FaUserFriends}
+              color="white"
+              w={7}
+              h={7}
+              cursor="pointer"
+            />
+          </Link>
+        )}
         <Link href="/boards">
           <Icon
             as={MdOutlineSpaceDashboard}

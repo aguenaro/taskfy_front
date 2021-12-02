@@ -9,26 +9,53 @@ import {
   ModalCloseButton,
   Flex,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Forms';
+import { Column } from 'interfaces/Column';
+import { IResponse } from 'interfaces/IResponse';
 import { ModalProps } from 'interfaces/ModalProps';
+import { useRouter } from 'next/router';
+import api from 'services/api';
 import * as yup from 'yup';
 
 interface AddColumnModalProps extends ModalProps {}
 
 interface CreateColumnFormData {
-  boardName: string;
+  name: string;
 }
 
 const createColumnSchema = yup.object().shape({
-  boardName: yup.string().required('Board name is required'),
+  name: yup.string().required('Campo obrigatório'),
 });
 
 export const AddColumnModal = ({ isOpen, onClose }: AddColumnModalProps) => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createColumnSchema),
   });
+  const toast = useToast();
+  const router = useRouter();
+  const { boardId } = router.query;
+
+  const handleCreateColumn: SubmitHandler<CreateColumnFormData> = async (
+    values
+  ) => {
+    const payload = {
+      name: values.name,
+    };
+
+    await api.post<IResponse<Column>>(`/boards/${boardId}/lists`, payload);
+
+    toast({
+      title: 'Coluna criada com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
+
+    onClose();
+  };
 
   return (
     <Modal
@@ -47,7 +74,7 @@ export const AddColumnModal = ({ isOpen, onClose }: AddColumnModalProps) => {
           <Flex
             direction="column"
             as="form"
-            onSubmit={(data) => console.log(data)}
+            onSubmit={handleSubmit(handleCreateColumn)}
             noValidate
           >
             <Input
@@ -59,6 +86,7 @@ export const AddColumnModal = ({ isOpen, onClose }: AddColumnModalProps) => {
             />
 
             <Button
+              type="submit"
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}

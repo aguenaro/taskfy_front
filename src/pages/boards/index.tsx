@@ -16,7 +16,6 @@ import { BoardCard, CreateBoardModal, EmptyBoard } from 'components/boards';
 import { Header } from 'components/Header';
 import { Board } from 'interfaces/Board';
 import { IResponse } from 'interfaces/IResponse';
-import mockedBoards from 'mock/boards.json';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import api from 'services/api';
@@ -82,6 +81,7 @@ const Boards: NextPage = () => {
             {boards.map((board, index) => (
               <BoardCard
                 key={index}
+                id={board.id}
                 title={board.name}
                 bgColor={board.color}
                 isManager={boardsAsManager.includes(board.id)}

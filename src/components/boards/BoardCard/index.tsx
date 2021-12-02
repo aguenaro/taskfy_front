@@ -5,10 +5,16 @@ import { useRouter } from 'next/router';
 interface BoardCardProps {
   title: string;
   bgColor: string;
+  id: string;
   isManager: boolean;
 }
 
-export const BoardCard = ({ bgColor, title, isManager }: BoardCardProps) => {
+export const BoardCard = ({
+  bgColor,
+  title,
+  id,
+  isManager,
+}: BoardCardProps) => {
   const router = useRouter();
   return (
     <Flex
@@ -21,7 +27,7 @@ export const BoardCard = ({ bgColor, title, isManager }: BoardCardProps) => {
       m="10px"
       boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 10px"
       cursor="pointer"
-      onClick={() => router.push('/boards/1')}
+      onClick={() => router.push(`/boards/${id}`)}
     >
       <Flex align="center" w="100%" h="40%" borderRadius="0 0 20px 20px" p={1}>
         <Text color="white" ml={3} fontWeight="bold">
