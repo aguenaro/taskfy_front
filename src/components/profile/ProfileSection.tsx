@@ -10,7 +10,7 @@ export const ProfileSection = () => {
       </Text>
       <Divider />
       <Flex align="center" w="100%" p="50px 100px">
-        {user.firstName && (
+        {user?.firstName && (
           <Flex align="center">
             <Avatar
               name={`${user.firstName} ${user.lastName}`}
