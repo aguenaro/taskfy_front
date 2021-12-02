@@ -54,15 +54,10 @@ export const ProfileMenu = () => {
         <MenuItem
           _hover={{ bg: 'grey' }}
           icon={<AiOutlineUser color="white" />}
-          onClick={() => push('profile')}
+          onClick={() => push('/profile')}
         >
           <Text color="white" fontSize="xs">
             seu perfil
-          </Text>
-        </MenuItem>
-        <MenuItem _hover={{ bg: 'grey' }} icon={<MdSettings color="white" />}>
-          <Text color="white" fontSize="xs">
-            configurações da conta
           </Text>
         </MenuItem>
         <MenuDivider />
