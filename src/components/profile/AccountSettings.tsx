@@ -63,7 +63,7 @@ export const AccountSettings = () => {
         <Input
           label="trocar username"
           type="text"
-          defaultValue={user.username}
+          defaultValue={user?.username}
           error={formState.errors.username}
           {...register('username')}
         />

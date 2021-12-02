@@ -83,7 +83,7 @@ export const SecuritySettings = () => {
         <Input
           label="trocar e-mail"
           type="text"
-          defaultValue={user.email}
+          defaultValue={user?.email}
           error={formStateEmail.errors.email}
           {...registerEmail('email')}
         />
