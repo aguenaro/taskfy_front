@@ -28,6 +28,7 @@ export const TaskDetailsModal = ({
   membersList,
 }: TaskDetailsModalProps) => {
   const user = membersList.find((member) => member.id === selectedTask?.userId);
+  if (selectedTask?.dueDate) console.log(parseISO(selectedTask?.dueDate));
   return (
     <Modal
       isOpen={isOpen}

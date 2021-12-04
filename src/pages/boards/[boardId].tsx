@@ -8,7 +8,14 @@ import {
 } from 'react-beautiful-dnd';
 import { MdAdd } from 'react-icons/md';
 
-import { Box, Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Icon,
+  Text,
+  useDisclosure,
+  Spinner,
+} from '@chakra-ui/react';
 import wavesImg from 'assets/img/waves2.svg';
 import {
   Sidebar,
@@ -59,6 +66,7 @@ const BoardDetails: NextPage = () => {
     onClose: onCloseAddColumn,
   } = useDisclosure();
   const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [selectedTask, setSelectedTask] = useState<Task>({} as Task);
   const [boardColumns, setBoardColumns] = useState<Column[]>([]);
   const [boardDetails, setBoardDetails] = useState<BoardDetailsResponse>(
@@ -74,6 +82,7 @@ const BoardDetails: NextPage = () => {
     );
     setBoardDetails(response.data);
     setBoardColumns(response.data.lists);
+    setLoading(false);
   }, [boardId]);
 
   useEffect(() => {
@@ -173,7 +182,7 @@ const BoardDetails: NextPage = () => {
   }
 
   const isManager = !!boardDetails.manager?.filter(
-    (manager) => manager.id === user.id
+    (manager) => manager.id === user?.id
   ).length;
 
   return (
@@ -206,52 +215,69 @@ const BoardDetails: NextPage = () => {
           boardName={boardDetails.name}
           openGraph={onOpenGraph}
         />
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable
-            droppableId="all-columns"
-            direction="horizontal"
-            type="column"
-          >
-            {(provided: DroppableProvided) => (
-              <Flex
-                id="board-columns"
-                align="start"
-                justify="space-between"
-                p="20px 30px 0"
-                spacing={7}
-                overflowX="auto"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {boardColumns.map((column, index) => (
-                  <BoardColumn
-                    key={column.name}
-                    title={column.name}
-                    index={index}
-                    tasks={column.tasks}
-                    onClick={(task: Task) => openDetailsModal(task)}
-                    addCard={() => onOpenAddCard()}
-                  />
-                ))}
-                {provided.placeholder}
+        {loading && (
+          <Spinner
+            position="absolute"
+            top={0}
+            bottom={0}
+            left={0}
+            right={0}
+            m="5% auto"
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.700"
+            size="lg"
+          />
+        )}
+        {!loading && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              droppableId="all-columns"
+              direction="horizontal"
+              type="column"
+            >
+              {(provided: DroppableProvided) => (
                 <Flex
-                  align="center"
-                  justify="center"
-                  bg="blue.800"
-                  borderRadius="30px"
-                  minW="300px"
-                  p={4}
-                  onClick={onOpenAddColumn}
+                  id="board-columns"
+                  align="start"
+                  justify="space-between"
+                  p="20px 30px 0"
+                  spacing={7}
+                  overflowX="auto"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
-                  <Icon as={MdAdd} color="white" mr={2} />
-                  <Text color="white" fontSize="sm" isTruncated>
-                    adicionar coluna
-                  </Text>
+                  {boardColumns.map((column, index) => (
+                    <BoardColumn
+                      key={column.name}
+                      title={column.name}
+                      index={index}
+                      tasks={column.tasks}
+                      onClick={(task: Task) => openDetailsModal(task)}
+                      addCard={() => onOpenAddCard()}
+                    />
+                  ))}
+                  {provided.placeholder}
+                  <Flex
+                    align="center"
+                    justify="center"
+                    bg="blue.800"
+                    borderRadius="30px"
+                    minW="300px"
+                    p={4}
+                    onClick={onOpenAddColumn}
+                  >
+                    <Icon as={MdAdd} color="white" mr={2} />
+                    <Text color="white" fontSize="sm" isTruncated>
+                      adicionar coluna
+                    </Text>
+                  </Flex>
                 </Flex>
-              </Flex>
-            )}
-          </Droppable>
-        </DragDropContext>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
         <Box position="absolute" bottom="0" zIndex="-1">
           <Image src={wavesImg} alt="Ondas" />
         </Box>

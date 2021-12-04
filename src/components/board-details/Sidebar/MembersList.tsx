@@ -27,7 +27,6 @@ export const MembersList = ({ members, isManager }: MembersListProps) => {
             <Flex align="center">
               <Avatar
                 name={`${member.firstName} ${member.lastName}`}
-                src={`https://avatars.githubusercontent.com/${member.username}`}
                 w={6}
                 h={6}
                 mr={1}
@@ -36,7 +35,7 @@ export const MembersList = ({ members, isManager }: MembersListProps) => {
                 {member.username}
               </Text>
             </Flex>
-            {member.id !== user.id && (
+            {member.id !== user?.id && (
               <Text color="red" fontSize="x-small" ml={1}>
                 Remover
               </Text>

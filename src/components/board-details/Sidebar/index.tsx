@@ -26,12 +26,6 @@ interface SidebarProps {
   membersList: User[];
 }
 
-const members = [
-  { username: 'aguenaro', name: 'Rodrigo Aguena' },
-  { username: 'eduardothsantos', name: 'Eduardo Thomas' },
-  { username: 'jacobodecal', name: 'Jacobo Soldra' },
-];
-
 export const Sidebar = ({
   boardName,
   openGraph,
@@ -44,7 +38,7 @@ export const Sidebar = ({
   const toast = useToast();
 
   async function onLeave() {
-    await api.delete(`/boards/${boardId}/user/${user.id}`);
+    await api.delete(`/boards/${boardId}/user/${user?.id}`);
     toast({
       title: 'Membro removido com sucesso!',
       status: 'success',

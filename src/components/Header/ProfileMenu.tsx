@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 
 export const ProfileMenu = () => {
   const { push } = useRouter();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <Menu placement="bottom-start" autoSelect={false}>
       <MenuButton
@@ -32,12 +32,7 @@ export const ProfileMenu = () => {
         }}
         _focus={{ bg: 'transparent' }}
       >
-        <Avatar
-          name="Rodrigo Aguena"
-          src="https://avatars.githubusercontent.com/aguenaro"
-          w={10}
-          h={10}
-        />
+        <Avatar name={`${user.firstName} ${user.lastName}`} w={10} h={10} />
       </MenuButton>
       <MenuList bg="#040D30">
         <MenuItem isDisabled cursor="default">
@@ -47,7 +42,7 @@ export const ProfileMenu = () => {
         </MenuItem>
         <MenuItem isDisabled cursor="default">
           <Text color="white" fontSize="xs" fontWeight="bold">
-            aguenaro
+            {user.username}
           </Text>
         </MenuItem>
         <MenuDivider />
