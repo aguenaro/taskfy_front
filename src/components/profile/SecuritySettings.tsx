@@ -48,7 +48,7 @@ export const SecuritySettings = () => {
     values
   ) => {
     const payload = {
-      username: user.username,
+      username: user?.username,
       email: values.email,
     };
     const { data: response } = await api.patch<IResponse<User>>(

@@ -46,7 +46,7 @@ export const TaskDetailsModal = ({
           <ModalBody mb={4}>
             <Flex align="center" justify="space-between" mt={10}>
               <Text color="white">Alocado para</Text>
-              <Text color="white">{`${user.firstName} ${user.lastName}`}</Text>
+              <Text color="white">{`${user?.firstName} ${user?.lastName}`}</Text>
             </Flex>
             <Divider my={3} />
 

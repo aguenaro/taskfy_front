@@ -150,7 +150,7 @@ const BoardDetails: NextPage = () => {
 
       setBoardColumns([...newBoard]);
     } else {
-      if (finish.name === 'Finalizado' && !user.isAdmin) return;
+      if (finish.name === 'Finalizado' && !user?.isAdmin) return;
 
       const startColumnTasks = Array.from(start.tasks);
 

@@ -32,7 +32,7 @@ export const ProfileMenu = () => {
         }}
         _focus={{ bg: 'transparent' }}
       >
-        <Avatar name={`${user.firstName} ${user.lastName}`} w={10} h={10} />
+        <Avatar name={`${user?.firstName} ${user?.lastName}`} w={10} h={10} />
       </MenuButton>
       <MenuList bg="#040D30">
         <MenuItem isDisabled cursor="default">
@@ -42,7 +42,7 @@ export const ProfileMenu = () => {
         </MenuItem>
         <MenuItem isDisabled cursor="default">
           <Text color="white" fontSize="xs" fontWeight="bold">
-            {user.username}
+            {user?.username}
           </Text>
         </MenuItem>
         <MenuDivider />

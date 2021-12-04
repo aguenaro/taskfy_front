@@ -21,7 +21,7 @@ interface UserCreateForm {
 
 interface AuthContextData {
   token: string;
-  user: User;
+  user?: User;
   login: (data: LoginCredentials) => Promise<void>;
   registerUser: (data: UserCreateForm) => Promise<void>;
   updateUser: (data: User) => void;

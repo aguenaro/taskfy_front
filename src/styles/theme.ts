@@ -36,6 +36,9 @@ export const theme = extendTheme({
     global: {
       body: {
         bg: '#06113B',
+        '*:focus': {
+          boxShadow: 'none',
+        },
       },
     },
   },

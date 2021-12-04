@@ -29,7 +29,7 @@ export const AccountSettings = () => {
   ) => {
     const payload = {
       username: values.username,
-      email: user.email,
+      email: user?.email,
     };
     const { data: response } = await api.patch<IResponse<User>>(
       '/users/update',
