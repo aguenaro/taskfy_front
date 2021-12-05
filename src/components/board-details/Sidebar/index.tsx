@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import { VscGraphLine } from 'react-icons/vsc';
 
@@ -10,12 +11,16 @@ import {
   Button,
   Stack,
   useToast,
+  Editable,
+  EditableInput,
+  EditablePreview,
 } from '@chakra-ui/react';
 import { useAuth } from 'hooks/useAuth';
 import { User } from 'interfaces/User';
 import { useRouter } from 'next/router';
 import api from 'services/api';
 
+import { EditableControls } from './EditableControls';
 import { MembersList } from './MembersList';
 
 interface SidebarProps {
@@ -36,6 +41,12 @@ export const Sidebar = ({
   const { user } = useAuth();
   const router = useRouter();
   const toast = useToast();
+
+  const [editableBoardName, setEditableBoardName] = useState('');
+
+  useEffect(() => {
+    if (boardName) setEditableBoardName(boardName);
+  }, [boardName]);
 
   async function onLeave() {
     await api.delete(`/boards/${boardId}/user/${user?.id}`);
@@ -61,6 +72,17 @@ export const Sidebar = ({
     router.push('/boards');
   }
 
+  async function handleEditBoardName() {
+    // await api.delete(`/boards/${boardId}`);
+    // toast({
+    //   title: 'Quadro deletado com sucesso!',
+    //   status: 'success',
+    //   position: 'top-right',
+    //   isClosable: true,
+    // });
+    // router.push('/boards');
+  }
+
   return (
     <Box
       minW="20vw"
@@ -69,11 +91,26 @@ export const Sidebar = ({
       bg="rgba(2, 9, 37, 0.75)"
       boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
     >
-      <Flex justify="space-between" align="center" m="0 20px">
-        <Text fontSize="lg" color="white">
+      <Flex
+        justify="space-between"
+        align="center"
+        m="0 20px"
+        position="relative"
+      >
+        {/* <Text fontSize="lg" color="white">
           {boardName}
-        </Text>
-        <Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} />
+        </Text> */}
+        <Editable
+          value={editableBoardName}
+          onChange={(text) => setEditableBoardName(text)}
+          onBlur={handleEditBoardName}
+          isPreviewFocusable={false}
+        >
+          <EditablePreview color="white" />
+          <EditableInput color="white" id="boardName" />
+          <EditableControls />
+        </Editable>
+        {/* <Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} /> */}
       </Flex>
       <Divider mt={3} />
       <Flex

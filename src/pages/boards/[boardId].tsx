@@ -193,6 +193,8 @@ const BoardDetails: NextPage = () => {
         onClose={onCloseDetails}
         selectedTask={selectedTask}
         membersList={boardDetails.users ?? []}
+        columns={boardDetails.lists ?? []}
+        refetchBoard={getBoardDetails}
       />
       <BurndownChartModal isOpen={isOpenGraph} onClose={onCloseGraph} />
       <AddCardModal
@@ -251,11 +253,11 @@ const BoardDetails: NextPage = () => {
                   {boardColumns.map((column, index) => (
                     <BoardColumn
                       key={column.name}
-                      title={column.name}
                       index={index}
-                      tasks={column.tasks}
+                      column={column}
                       onClick={(task: Task) => openDetailsModal(task)}
                       addCard={() => onOpenAddCard()}
+                      refetchBoard={getBoardDetails}
                     />
                   ))}
                   {provided.placeholder}

@@ -6,5 +6,5 @@ export interface Task {
   stressPoints: number;
   createdAt: string;
   updatedAt: string;
-  userId: string;
+  taskAssignedId: string;
 }

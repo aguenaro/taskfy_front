@@ -55,13 +55,7 @@ export const ColumnCardComponent = ({
             {task.name}
           </Text>
           <Flex align="center">
-            <Avatar
-              name={task.userId}
-              src={`https://avatars.githubusercontent.com/${task.userId}`}
-              w={5}
-              h={5}
-              mr={2}
-            />
+            <Avatar name={task.taskAssignedId} w={5} h={5} mr={2} />
             <Text color={checkFinishDate(task.dueDate)} fontSize="sm">
               {formatDistance(parseISO(task.dueDate), new Date(), {
                 locale: ptBR,
