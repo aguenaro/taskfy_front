@@ -80,6 +80,7 @@ export const EditCardModal = ({
         dueDate: format(values.dueDate, 'yyyy-MM-dd'),
         stressPoints: values.stressPoints,
         taskAssignedId: values.taskAssignedId,
+        newListId: values.listId,
       };
 
       await api.put<IResponse<Task>>(

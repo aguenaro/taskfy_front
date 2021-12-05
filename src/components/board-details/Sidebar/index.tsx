@@ -72,14 +72,11 @@ export const Sidebar = ({
   }
 
   async function handleEditBoardName() {
-    // await api.delete(`/boards/${boardId}`);
-    // toast({
-    //   title: 'Quadro deletado com sucesso!',
-    //   status: 'success',
-    //   position: 'top-right',
-    //   isClosable: true,
-    // });
-    // router.push('/boards');
+    const payload = {
+      name: editableBoardName,
+    };
+
+    await api.patch(`/boards/${boardId}`, payload);
   }
 
   return (

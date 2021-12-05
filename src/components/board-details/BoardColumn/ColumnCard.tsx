@@ -22,7 +22,7 @@ export const ColumnCardComponent = ({
   function checkFinishDate(date: string) {
     const differenceBetweenDates = differenceInDays(parseISO(date), new Date());
 
-    if (column === 'Finalizado') {
+    if (column === 'Finalizadas') {
       return 'green.300';
     } else if (differenceBetweenDates > 0) {
       return 'white';

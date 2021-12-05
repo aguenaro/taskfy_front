@@ -26,6 +26,7 @@ import {
   AddColumnModal,
 } from 'components/board-details';
 import { Header } from 'components/Header';
+import { format } from 'date-fns';
 import { useAuth } from 'hooks/useAuth';
 import { Board } from 'interfaces/Board';
 import { Column } from 'interfaces/Column';
@@ -94,7 +95,7 @@ const BoardDetails: NextPage = () => {
     onOpenDetails();
   }
 
-  function onDragEnd(result: DropResult) {
+  async function onDragEnd(result: DropResult) {
     const {
       draggableId,
       source: { droppableId, index },
@@ -118,6 +119,14 @@ const BoardDetails: NextPage = () => {
       );
 
       setBoardColumns([...newColumnsOrder]);
+
+      const newListOrder = newColumnsOrder.map((column) => column.id);
+
+      try {
+        await api.patch(`/boards/${boardId}/lists`, newListOrder);
+      } catch {
+        return;
+      }
 
       return;
     }
@@ -149,14 +158,29 @@ const BoardDetails: NextPage = () => {
       newBoard[startIndex].tasks = newColumnTasks;
 
       setBoardColumns([...newBoard]);
+
+      const newTasksOrder = newColumnTasks.map((task) => task.id);
+      console.log(newTasksOrder);
+
+      try {
+        await api.patch(
+          `/boards/${boardId}/lists/${finish.id}/tasks`,
+          newTasksOrder
+        );
+      } catch {
+        return;
+      }
     } else {
-      if (finish.name === 'Finalizado' && !user?.isAdmin) return;
+      if (finish.name === 'Finalizadas' && !user?.isAdmin) return;
 
       const startColumnTasks = Array.from(start.tasks);
 
       startColumnTasks.splice(index, 1);
 
       const finishColumnTasks = Array.from(finish.tasks);
+
+      const task =
+        start.tasks.find((task) => task.name === draggableId) ?? ({} as Task);
 
       finishColumnTasks.splice(
         destination.index,
@@ -178,6 +202,28 @@ const BoardDetails: NextPage = () => {
       newBoard[finishIndex].tasks = finishColumnTasks;
 
       setBoardColumns([...newBoard]);
+
+      const newTasksOrder = finishColumnTasks.map((task) => task.id);
+
+      try {
+        const payload = {
+          name: task.name,
+          dueDate: task.dueDate,
+          stressPoints: task.stressPoints,
+          taskAssignedId: task.userId,
+          newListId: finish.id,
+        };
+        await api.put<IResponse<Task>>(
+          `/boards/${boardId}/lists/${start.id}/tasks/${task.id}`,
+          payload
+        );
+        await api.patch(
+          `/boards/${boardId}/lists/${finish.id}/tasks`,
+          newTasksOrder
+        );
+      } catch {
+        return;
+      }
     }
   }
 

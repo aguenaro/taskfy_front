@@ -7,4 +7,5 @@ export interface Task {
   createdAt: string;
   updatedAt: string;
   taskAssignedId: string;
+  userId: string;
 }
