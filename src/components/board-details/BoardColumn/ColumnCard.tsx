@@ -35,7 +35,7 @@ export const ColumnCardComponent = ({
 
   return (
     <Draggable draggableId={task.name} index={index}>
-      {(provided, snapshot) => (
+      {(provided) => (
         <Flex
           direction="column"
           justify="space-between"

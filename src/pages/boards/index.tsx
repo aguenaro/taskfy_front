@@ -9,7 +9,6 @@ import {
   useDisclosure,
   Flex,
   Spinner,
-  useToast,
 } from '@chakra-ui/react';
 import wavesImg from 'assets/img/waves.svg';
 import { BoardCard, CreateBoardModal, EmptyBoard } from 'components/boards';

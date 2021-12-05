@@ -13,9 +13,9 @@ interface UpdateEmailFormData {
   email: string;
 }
 
-interface UpdatePasswordFormData {
-  password: string;
-}
+// interface UpdatePasswordFormData {
+//   password: string;
+// }
 
 const updateEmailSchema = yup.object().shape({
   email: yup.string().email('E-mail inválido').required('Campo obrigatório'),
@@ -36,8 +36,8 @@ export const SecuritySettings = () => {
 
   const {
     register: registerPassword,
-    handleSubmit: handleSubmitPassword,
     formState: formStatePassword,
+    // handleSubmit: handleSubmitPasswor
   } = useForm({
     resolver: yupResolver(updatePasswordSchema),
   });
@@ -107,7 +107,7 @@ export const SecuritySettings = () => {
         w="50%"
         as="form"
         p="30px 0"
-        onSubmit={(data) => console.log(data)}
+        // onSubmit={(data) => console.log(data)}
         noValidate
       >
         <Input

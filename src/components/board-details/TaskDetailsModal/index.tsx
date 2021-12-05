@@ -43,16 +43,14 @@ export const TaskDetailsModal = ({
     onClose: onCloseEdit,
   } = useDisclosure();
 
-  const user = membersList.find(
-    (member) => member.id === selectedTask?.taskAssignedId
-  );
+  // const user = membersList.find(
+  //   (member) => member.id === selectedTask?.taskAssignedId
+  // );
 
   function handleEditTask() {
     onOpenEdit();
     onClose();
   }
-
-  console.log(selectedTask);
 
   return (
     <>

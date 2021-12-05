@@ -1,6 +1,6 @@
 import { AiOutlineUser } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
-import { MdKeyboardArrowDown, MdSettings } from 'react-icons/md';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import {
   Menu,

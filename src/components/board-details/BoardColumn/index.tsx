@@ -72,7 +72,7 @@ const BoardColumnComponent = ({
               </Text>
             </Flex>
             <Droppable droppableId={column.name} type="task">
-              {(provided: DroppableProvided, snapshot) => (
+              {(provided: DroppableProvided) => (
                 <Flex
                   direction="column"
                   spacing={3}

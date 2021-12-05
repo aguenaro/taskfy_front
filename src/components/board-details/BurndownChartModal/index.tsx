@@ -26,54 +26,6 @@ import api from 'services/api';
 
 interface BurndownChartModalProps extends ModalProps {}
 
-const data = [
-  {
-    name: '10/12/2021',
-    recomended: 60,
-    situation: 60,
-    amt: 2400,
-  },
-  {
-    name: '20/12/2021',
-    recomended: 51,
-    situation: 47,
-    amt: 2210,
-  },
-  {
-    name: '30/12/2021',
-    recomended: 43,
-    situation: 44,
-    amt: 2290,
-  },
-  {
-    name: '05/01/2022',
-    recomended: 31,
-    situation: 36,
-    amt: 2000,
-  },
-  {
-    name: '15/01/2022',
-    recomended: 20,
-    situation: 25,
-    amt: 2181,
-  },
-  {
-    name: '25/01/2022',
-    recomended: 14,
-    amt: 2500,
-  },
-  {
-    name: '01/02/2022',
-    recomended: 6,
-    amt: 2100,
-  },
-  {
-    name: '13/02/2022',
-    recomended: 0,
-    amt: 2100,
-  },
-];
-
 export const BurndownChartModal = ({
   isOpen,
   onClose,
