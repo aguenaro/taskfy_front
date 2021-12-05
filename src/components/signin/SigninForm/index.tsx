@@ -6,7 +6,6 @@ import { AxiosError } from 'axios';
 import { Input } from 'components/Forms';
 import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
-import api from 'services/api';
 import * as yup from 'yup';
 
 interface SigninFormData {

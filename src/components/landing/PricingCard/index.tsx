@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Link } from '@chakra-ui/react';
+import { Flex, Text, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import { PlanCard } from './PlanCard';

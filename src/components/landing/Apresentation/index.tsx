@@ -1,4 +1,4 @@
-import { Flex, Text, Stack, Box } from '@chakra-ui/react';
+import { Flex, Text, Stack } from '@chakra-ui/react';
 
 import { PullRequestDetailsCard } from './PullRequestDetailsCard';
 import { PullRequestsListCard } from './PullRequestsListCard';
