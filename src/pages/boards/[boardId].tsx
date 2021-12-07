@@ -26,7 +26,6 @@ import {
   AddColumnModal,
 } from 'components/board-details';
 import { Header } from 'components/Header';
-import { format } from 'date-fns';
 import { useAuth } from 'hooks/useAuth';
 import { Board } from 'interfaces/Board';
 import { Column } from 'interfaces/Column';
@@ -160,7 +159,6 @@ const BoardDetails: NextPage = () => {
       setBoardColumns([...newBoard]);
 
       const newTasksOrder = newColumnTasks.map((task) => task.id);
-      console.log(newTasksOrder);
 
       try {
         await api.patch(
@@ -262,6 +260,7 @@ const BoardDetails: NextPage = () => {
           boardId={boardDetails.id}
           boardName={boardDetails.name}
           openGraph={onOpenGraph}
+          refetchBoard={getBoardDetails}
         />
         {loading && (
           <Spinner

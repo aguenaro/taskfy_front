@@ -13,12 +13,15 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useAuth } from 'hooks/useAuth';
+import { IResponse } from 'interfaces/IResponse';
 import { User } from 'interfaces/User';
 import { useRouter } from 'next/router';
 import api from 'services/api';
 
+import { AddMemberModal } from '../AddMemberModal';
 import { EditableControls } from './EditableControls';
 import { MembersList } from './MembersList';
 
@@ -28,6 +31,7 @@ interface SidebarProps {
   openGraph: () => void;
   isManager: boolean;
   membersList: User[];
+  refetchBoard: () => void;
 }
 
 export const Sidebar = ({
@@ -36,16 +40,31 @@ export const Sidebar = ({
   boardId,
   isManager,
   membersList,
+  refetchBoard,
 }: SidebarProps) => {
   const { user } = useAuth();
   const router = useRouter();
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [editableBoardName, setEditableBoardName] = useState('');
+  const [organizationUsers, setOrganizationUsers] = useState<User[]>([]);
 
   useEffect(() => {
     if (boardName) setEditableBoardName(boardName);
   }, [boardName]);
+
+  useEffect(() => {
+    const getOrganizationMembers = async () => {
+      const { data: response } = await api.get<IResponse<User[]>>(
+        '/organizations/users'
+      );
+
+      setOrganizationUsers(response.data);
+    };
+
+    getOrganizationMembers();
+  }, []);
 
   async function onLeave() {
     await api.delete(`/boards/${boardId}/user/${user?.id}`);
@@ -80,43 +99,56 @@ export const Sidebar = ({
   }
 
   return (
-    <Box
-      minW="20vw"
-      h="100%"
-      p="10px 0"
-      bg="rgba(2, 9, 37, 0.75)"
-      boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
-    >
-      <Flex
-        justify="space-between"
-        align="center"
-        m="0 20px"
-        position="relative"
+    <>
+      <AddMemberModal
+        isOpen={isOpen}
+        onClose={onClose}
+        members={membersList}
+        organizationUsers={organizationUsers}
+        refetchBoard={refetchBoard}
+      />
+      <Box
+        minW="20vw"
+        h="100%"
+        p="10px 0"
+        bg="rgba(2, 9, 37, 0.75)"
+        boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
       >
-        {/* <Text fontSize="lg" color="white">
+        <Flex
+          justify="space-between"
+          align="center"
+          m="0 20px"
+          position="relative"
+        >
+          {/* <Text fontSize="lg" color="white">
           {boardName}
         </Text> */}
-        <Editable
-          value={editableBoardName}
-          onChange={(text) => setEditableBoardName(text)}
-          onBlur={handleEditBoardName}
-          isPreviewFocusable={false}
+          <Editable
+            value={editableBoardName}
+            onChange={(text) => setEditableBoardName(text)}
+            onBlur={handleEditBoardName}
+            isPreviewFocusable={false}
+          >
+            <EditablePreview color="white" />
+            <EditableInput color="white" id="boardName" />
+            <EditableControls />
+          </Editable>
+          {/* <Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} /> */}
+        </Flex>
+        <Divider mt={3} />
+        <Flex
+          h="calc(90% - 50px)"
+          direction="column"
+          justify="space-between"
+          m="10px 20px 0"
         >
-          <EditablePreview color="white" />
-          <EditableInput color="white" id="boardName" />
-          <EditableControls />
-        </Editable>
-        {/* <Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} /> */}
-      </Flex>
-      <Divider mt={3} />
-      <Flex
-        h="calc(90% - 50px)"
-        direction="column"
-        justify="space-between"
-        m="10px 20px 0"
-      >
-        <MembersList members={membersList} isManager={isManager} />
-        {/* <Stack spacing={4}>
+          <MembersList
+            members={membersList}
+            isManager={isManager}
+            openModal={onOpen}
+            refetchBoard={refetchBoard}
+          />
+          {/* <Stack spacing={4}>
           <Box>
             <Text color="white" fontSize="small">
               Início
@@ -134,44 +166,51 @@ export const Sidebar = ({
             </Text>
           </Box>
         </Stack> */}
-        <Flex
-          align="center"
-          justify="center"
-          cursor="pointer"
-          onClick={openGraph}
-        >
-          <Icon cursor="pointer" as={VscGraphLine} color="white" w={5} h={5} />
-          <Text color="white" fontSize="small" ml={2}>
-            Visualizar gráfico
-          </Text>
+          <Flex
+            align="center"
+            justify="center"
+            cursor="pointer"
+            onClick={openGraph}
+          >
+            <Icon
+              cursor="pointer"
+              as={VscGraphLine}
+              color="white"
+              w={5}
+              h={5}
+            />
+            <Text color="white" fontSize="small" ml={2}>
+              Visualizar gráfico
+            </Text>
+          </Flex>
+          <Stack spacing={4} m="0 20px">
+            {!isManager && (
+              <Button
+                w="100%"
+                variant="outline"
+                colorScheme="red"
+                borderRadius="20px"
+                size="sm"
+                onClick={onLeave}
+              >
+                sair
+              </Button>
+            )}
+            {isManager && (
+              <Button
+                w="100%"
+                variant="outline"
+                colorScheme="red"
+                borderRadius="20px"
+                size="sm"
+                onClick={onDelete}
+              >
+                excluir
+              </Button>
+            )}
+          </Stack>
         </Flex>
-        <Stack spacing={4} m="0 20px">
-          {!isManager && (
-            <Button
-              w="100%"
-              variant="outline"
-              colorScheme="red"
-              borderRadius="20px"
-              size="sm"
-              onClick={onLeave}
-            >
-              sair
-            </Button>
-          )}
-          {isManager && (
-            <Button
-              w="100%"
-              variant="outline"
-              colorScheme="red"
-              borderRadius="20px"
-              size="sm"
-              onClick={onDelete}
-            >
-              excluir
-            </Button>
-          )}
-        </Stack>
-      </Flex>
-    </Box>
+      </Box>
+    </>
   );
 };
