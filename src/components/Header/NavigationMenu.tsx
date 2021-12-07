@@ -13,7 +13,7 @@ export const NavigationMenu = () => {
   const { user } = useAuth();
 
   // const externalPaths = ['/', '/signin', '/signup'];
-  const internalPaths = ['/boards', '/boards/[boardId]', '/profile', '/users'];
+  const internalPaths = ['/boards', '/boards/[boardId]', '/profile', '/admin'];
 
   const ExternalMenu = () => {
     return (
@@ -50,7 +50,7 @@ export const NavigationMenu = () => {
     return (
       <>
         {user?.isAdmin && (
-          <Link href="/users">
+          <Link href="/admin">
             <Icon
               as={FaUserFriends}
               color="white"
