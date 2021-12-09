@@ -50,7 +50,7 @@ export const PullRequestDetailsCard = () => {
                 borderColor="teal.200"
                 pl={1}
               >
-                Author
+                Autor
               </Th>
               <Th
                 color="white"
@@ -65,15 +65,15 @@ export const PullRequestDetailsCard = () => {
           <Tbody>
             <Tr>
               <Td color="white" fontSize="small" border="none" pl={1}>
-                created at
+                Criado há
               </Td>
               <Td color="white" fontSize="small" border="none" pl={1}>
-                1 month ago
+                1 mês atrás
               </Td>
             </Tr>
             <Tr>
               <Td color="white" fontSize="small" border="none" pl={1}>
-                title
+                título
               </Td>
               <Td color="white" fontSize="small" border="none" pl={1}>
                 landing page
@@ -84,15 +84,15 @@ export const PullRequestDetailsCard = () => {
                 status
               </Td>
               <Td color="white" fontSize="small" border="none" pl={1}>
-                open
+                aberto
               </Td>
             </Tr>
             <Tr>
               <Td color="white" fontSize="small" border="none" pl={1}>
-                priority
+                prioridade
               </Td>
               <Td color="white" fontSize="small" border="none" pl={1}>
-                low
+                baixa
               </Td>
             </Tr>
           </Tbody>
@@ -100,7 +100,7 @@ export const PullRequestDetailsCard = () => {
         <HStack align="center" justify="center" my={5}>
           <Icon as={FaGithub} w={6} h={6} color="white" />
           <Text color="white" fontSize="lg">
-            view at github
+            Veja no github
           </Text>
         </HStack>
       </Box>
