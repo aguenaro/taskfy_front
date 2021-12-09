@@ -1,8 +1,12 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { Text, Flex, Divider, Button } from '@chakra-ui/react';
+import { Text, Flex, Divider, Button, useToast } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Forms';
+import { useAuth } from 'hooks/useAuth';
+import { IResponse } from 'interfaces/IResponse';
+import { User } from 'interfaces/User';
+import api from 'services/api';
 import * as yup from 'yup';
 
 interface UpdateUsernameFormData {
@@ -17,6 +21,31 @@ export const AccountSettings = () => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(updateUsernameSchema),
   });
+  const { user, updateUser } = useAuth();
+  const toast = useToast();
+
+  const handleUpdateUser: SubmitHandler<UpdateUsernameFormData> = async (
+    values
+  ) => {
+    const payload = {
+      username: values.username,
+      email: user?.email,
+    };
+    const { data: response } = await api.patch<IResponse<User>>(
+      '/users/update',
+      payload
+    );
+
+    updateUser(response.data);
+
+    toast({
+      title: 'Dados atualizados com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
+  };
+
   return (
     <>
       <Text color="white" fontSize="3xl" mb={1}>
@@ -28,17 +57,19 @@ export const AccountSettings = () => {
         w="50%"
         as="form"
         p="30px 0"
-        onSubmit={(data) => console.log(data)}
+        onSubmit={handleSubmit(handleUpdateUser)}
         noValidate
       >
         <Input
           label="trocar username"
           type="text"
+          defaultValue={user?.username}
           error={formState.errors.username}
           {...register('username')}
         />
 
         <Button
+          type="submit"
           variant="outline"
           p="0 40px"
           ml={5}
@@ -46,6 +77,7 @@ export const AccountSettings = () => {
           borderRadius="15px"
           colorScheme="telegram"
           spinnerPlacement="end"
+          isLoading={formState.isSubmitting}
         >
           trocar username
         </Button>

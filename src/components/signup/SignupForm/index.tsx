@@ -2,7 +2,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Flex, Button, Box, Text, Divider, useToast } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from 'axios';
 import { Input } from 'components/Forms';
+import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
@@ -31,21 +33,56 @@ export const SignupForm = () => {
     resolver: yupResolver(createAccountSchema),
   });
   const { push } = useRouter();
+  const { registerUser } = useAuth();
   const toast = useToast();
 
   const handleCreateAccount: SubmitHandler<CreateAccountFormData> = async (
     values
   ) => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    console.log(values);
+    try {
+      const payload = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        username: values.username,
+        password: values.password,
+      };
 
-    push('/signin');
-    toast({
-      title: 'Conta criada com sucesso',
-      status: 'success',
-      position: 'top-right',
-      isClosable: true,
-    });
+      await registerUser(payload);
+
+      toast({
+        title: 'Conta criada com sucesso',
+        status: 'success',
+        position: 'top-right',
+        isClosable: true,
+      });
+      push('/boards');
+      toast({
+        title: 'Bem-vindo ao Taskfy!',
+        status: 'success',
+        position: 'top-right',
+        isClosable: true,
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError.response?.status === 400) {
+        toast({
+          title: 'Dados incorretos',
+          status: 'error',
+          position: 'top-right',
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: 'Houve algum problema. Tente novamente mais tarde.',
+          status: 'error',
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    }
   };
 
   return (

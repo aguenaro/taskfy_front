@@ -1,6 +1,6 @@
 import { AiOutlineUser } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
-import { MdKeyboardArrowDown, MdSettings } from 'react-icons/md';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import {
   Menu,
@@ -12,10 +12,12 @@ import {
   Avatar,
   Button,
 } from '@chakra-ui/react';
+import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
 
 export const ProfileMenu = () => {
   const { push } = useRouter();
+  const { logout, user } = useAuth();
   return (
     <Menu placement="bottom-start" autoSelect={false}>
       <MenuButton
@@ -30,12 +32,7 @@ export const ProfileMenu = () => {
         }}
         _focus={{ bg: 'transparent' }}
       >
-        <Avatar
-          name="Rodrigo Aguena"
-          src="https://avatars.githubusercontent.com/aguenaro"
-          w={10}
-          h={10}
-        />
+        <Avatar name={`${user?.firstName} ${user?.lastName}`} w={10} h={10} />
       </MenuButton>
       <MenuList bg="#040D30">
         <MenuItem isDisabled cursor="default">
@@ -45,29 +42,24 @@ export const ProfileMenu = () => {
         </MenuItem>
         <MenuItem isDisabled cursor="default">
           <Text color="white" fontSize="xs" fontWeight="bold">
-            aguenaro
+            {user?.username}
           </Text>
         </MenuItem>
         <MenuDivider />
         <MenuItem
           _hover={{ bg: 'grey' }}
           icon={<AiOutlineUser color="white" />}
-          onClick={() => push('profile')}
+          onClick={() => push('/profile')}
         >
           <Text color="white" fontSize="xs">
             seu perfil
-          </Text>
-        </MenuItem>
-        <MenuItem _hover={{ bg: 'grey' }} icon={<MdSettings color="white" />}>
-          <Text color="white" fontSize="xs">
-            configurações da conta
           </Text>
         </MenuItem>
         <MenuDivider />
         <MenuItem
           _hover={{ bg: 'grey' }}
           icon={<BiLogOut color="white" />}
-          onClick={() => push('/signin')}
+          onClick={logout}
         >
           <Text color="white" fontSize="xs">
             sair

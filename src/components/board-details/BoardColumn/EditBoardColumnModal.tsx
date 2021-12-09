@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import {
@@ -20,41 +21,50 @@ import { useRouter } from 'next/router';
 import api from 'services/api';
 import * as yup from 'yup';
 
-interface AddColumnModalProps extends ModalProps {
+interface EditBoardColumnModalProps extends ModalProps {
+  column: Column;
   refetchBoard: () => void;
 }
 
-interface CreateColumnFormData {
+interface EditColumnFormData {
   name: string;
 }
 
-const createColumnSchema = yup.object().shape({
+const editColumnSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
 });
 
-export const AddColumnModal = ({
+export const EditBoardColumnModal = ({
   isOpen,
   onClose,
+  column,
   refetchBoard,
-}: AddColumnModalProps) => {
-  const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(createColumnSchema),
+}: EditBoardColumnModalProps) => {
+  const { register, handleSubmit, formState, setValue } = useForm({
+    resolver: yupResolver(editColumnSchema),
   });
   const toast = useToast();
   const router = useRouter();
   const { boardId } = router.query;
 
-  const handleCreateColumn: SubmitHandler<CreateColumnFormData> = async (
+  useEffect(() => {
+    if (column.name) setValue('name', column.name);
+  }, [column.name, setValue]);
+
+  const handleEditColumn: SubmitHandler<EditColumnFormData> = async (
     values
   ) => {
     const payload = {
       name: values.name,
     };
 
-    await api.post<IResponse<Column>>(`/boards/${boardId}/lists`, payload);
+    await api.put<IResponse<string>>(
+      `/boards/${boardId}/lists/${column.id}`,
+      payload
+    );
 
     toast({
-      title: 'Coluna criada com sucesso!',
+      title: 'Coluna editada com sucesso!',
       status: 'success',
       position: 'top-right',
       isClosable: true,
@@ -74,14 +84,14 @@ export const AddColumnModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="white">Adicionar nova coluna</ModalHeader>
+        <ModalHeader color="white">Editar coluna</ModalHeader>
 
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
         <ModalBody mb={4}>
           <Flex
             direction="column"
             as="form"
-            onSubmit={handleSubmit(handleCreateColumn)}
+            onSubmit={handleSubmit(handleEditColumn)}
             noValidate
           >
             <Input
@@ -97,10 +107,10 @@ export const AddColumnModal = ({
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}
-              loadingText="Criando"
+              loadingText="Salvando"
               spinnerPlacement="end"
             >
-              Criar coluna
+              Salvar coluna
             </Button>
           </Flex>
         </ModalBody>

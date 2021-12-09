@@ -1,15 +1,51 @@
-import { MdChat, MdPersonAdd } from 'react-icons/md';
+import { MdPersonAdd } from 'react-icons/md';
 
-import { Box, Text, Flex, Stack, Avatar, Icon } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Flex,
+  Stack,
+  Avatar,
+  Icon,
+  useToast,
+} from '@chakra-ui/react';
+import { useAuth } from 'hooks/useAuth';
+import { IResponse } from 'interfaces/IResponse';
+import { User } from 'interfaces/User';
+import { useRouter } from 'next/router';
+import api from 'services/api';
 
 interface MembersListProps {
-  members: {
-    username: string;
-    name: string;
-  }[];
+  members: User[];
+  isManager: boolean;
+  openModal: () => void;
+  refetchBoard: () => void;
 }
 
-export const MembersList = ({ members }: MembersListProps) => {
+export const MembersList = ({
+  members,
+  isManager,
+  openModal,
+  refetchBoard,
+}: MembersListProps) => {
+  const { user } = useAuth();
+  const toast = useToast();
+  const router = useRouter();
+  const { boardId } = router.query;
+
+  async function handleRemoveMember(userId: string) {
+    await api.delete<IResponse<void>>(`/boards/${boardId}/user/${userId}`, {});
+
+    toast({
+      title: 'Membro removido com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
+    });
+
+    refetchBoard();
+  }
+
   return (
     <Box>
       <Text color="white" fontSize="sm" mb={3}>
@@ -25,8 +61,7 @@ export const MembersList = ({ members }: MembersListProps) => {
           >
             <Flex align="center">
               <Avatar
-                name={member.name}
-                src={`https://avatars.githubusercontent.com/${member.username}`}
+                name={`${member.firstName} ${member.lastName}`}
                 w={6}
                 h={6}
                 mr={1}
@@ -35,15 +70,32 @@ export const MembersList = ({ members }: MembersListProps) => {
                 {member.username}
               </Text>
             </Flex>
-            <Icon cursor="pointer" as={MdChat} color="white" />
+            {member.id !== user?.id && (
+              <Text
+                color="red"
+                fontSize="x-small"
+                ml={1}
+                onClick={() => handleRemoveMember(member.id)}
+                cursor="pointer"
+              >
+                Remover
+              </Text>
+            )}
           </Flex>
         ))}
-        <Flex align="center" justify="center">
-          <Icon cursor="pointer" as={MdPersonAdd} color="white" />
-          <Text fontSize="smaller" color="white" ml={2}>
-            adicionar membro
-          </Text>
-        </Flex>
+        {isManager && (
+          <Flex
+            cursor="pointer"
+            align="center"
+            justify="center"
+            onClick={openModal}
+          >
+            <Icon as={MdPersonAdd} color="white" />
+            <Text fontSize="smaller" color="white" ml={2}>
+              adicionar membro
+            </Text>
+          </Flex>
+        )}
       </Stack>
     </Box>
   );

@@ -1,18 +1,20 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { Button, Box } from '@chakra-ui/react';
+import { Button, Box, useToast } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from 'axios';
 import { Input } from 'components/Forms';
+import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
 interface SigninFormData {
-  email: string;
+  emailOrUsername: string;
   password: string;
 }
 
 const signinSchema = yup.object().shape({
-  email: yup.string().email('Email inválido').required('Campo obrigatório'),
+  emailOrUsername: yup.string().required('Campo obrigatório'),
   password: yup.string().required('Campo obrigatório'),
 });
 
@@ -20,23 +22,56 @@ export const SigninForm = () => {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signinSchema),
   });
+  const toast = useToast();
+  const { login } = useAuth();
   const { push } = useRouter();
 
   const handleSignin: SubmitHandler<SigninFormData> = async (values) => {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    console.log(values);
+    try {
+      const payload = {
+        emailOrUsername: values.emailOrUsername,
+        password: values.password,
+      };
 
-    push('/boards');
+      await login(payload);
+
+      toast({
+        title: 'Bem-vindo ao Taskfy!',
+        status: 'success',
+        position: 'top-right',
+        isClosable: true,
+      });
+
+      push('/boards');
+    } catch (error) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError.response?.status === 400) {
+        toast({
+          title: 'As credenciais informadas estão incorretas',
+          status: 'error',
+          position: 'top-right',
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: 'Houve algum problema. Tente novamente mais tarde.',
+          status: 'error',
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    }
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(handleSignin)} noValidate>
       <Input
-        label="email"
-        type="email"
+        label="Email ou usuário"
+        type="text"
         isRequired
-        error={formState.errors.email}
-        {...register('email')}
+        error={formState.errors.emailOrUsername}
+        {...register('emailOrUsername')}
       />
       <Input
         label="senha"

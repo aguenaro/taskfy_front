@@ -1,8 +1,11 @@
 export interface Task {
+  dueDate: string;
   id: string;
-  assignedFor: string;
-  title: string;
-  deadline: string;
+  listId: string;
+  name: string;
+  stressPoints: number;
   createdAt: string;
-  effort: number;
+  updatedAt: string;
+  taskAssignedId: string;
+  userId: string;
 }

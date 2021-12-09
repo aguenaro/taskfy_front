@@ -9,11 +9,11 @@ export const Apresentation = () => {
       <Stack>
         <Text color="white" fontSize="6xl" textShadow="0px 0px 10px #FFFFFF">
           Gerenciamento <br /> de tarefas <br />
-          para desenvolvedores.
+          para empresas.
         </Text>
         <Text color="white" fontSize="md">
           Uma ferramente de produtividade simples, <br />
-          feito de dev para dev.
+          feito para empresas.
         </Text>
       </Stack>
       <Flex justify="space-around" w="100%">

@@ -9,11 +9,13 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Box,
+  useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Forms';
 import { Board } from 'interfaces/Board';
+import { IResponse } from 'interfaces/IResponse';
+import api from 'services/api';
 import * as yup from 'yup';
 interface CreateBoardModalProps {
   isOpen: boolean;
@@ -26,7 +28,7 @@ interface CreateBoardFormData {
 }
 
 const createBoardSchema = yup.object().shape({
-  boardName: yup.string().required('Board name is required'),
+  boardName: yup.string().required('Campo obrigatório'),
 });
 
 export const CreateBoardModal = ({
@@ -37,15 +39,27 @@ export const CreateBoardModal = ({
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createBoardSchema),
   });
+  const toast = useToast();
 
   const handleCreateBoard: SubmitHandler<CreateBoardFormData> = async (
     values
   ) => {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    const payload = {
+      boardName: values.boardName,
+      color: `#${Math.random().toString(16).substr(-6)}`.toLowerCase(),
+    };
+    const { data: response } = await api.post<IResponse<Board>>(
+      '/boards',
+      payload
+    );
 
-    addNewBoard({
-      title: values.boardName,
-      bgColor: `#${Math.random().toString(16).substr(-6)}`,
+    addNewBoard(response.data);
+
+    toast({
+      title: 'Quadro criado com sucesso!',
+      status: 'success',
+      position: 'top-right',
+      isClosable: true,
     });
 
     onClose();

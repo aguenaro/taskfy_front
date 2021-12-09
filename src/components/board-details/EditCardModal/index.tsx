@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import {
@@ -13,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input, Select } from 'components/Forms';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Column } from 'interfaces/Column';
 import { IResponse } from 'interfaces/IResponse';
 import { ModalProps } from 'interfaces/ModalProps';
@@ -23,13 +24,14 @@ import { useRouter } from 'next/router';
 import api from 'services/api';
 import * as yup from 'yup';
 
-interface AddCardModalProps extends ModalProps {
+interface EditCardModalProps extends ModalProps {
   members: User[];
   columns: Column[];
   refetchBoard: () => void;
+  selectedTask?: Task;
 }
 
-interface CreateCardFormData {
+interface EditCardFormData {
   name: string;
   dueDate: Date;
   stressPoints: number;
@@ -37,7 +39,7 @@ interface CreateCardFormData {
   listId: string;
 }
 
-const createCardSchema = yup.object().shape({
+const editCardSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
   dueDate: yup.date().required('Campo obrigatório'),
   stressPoints: yup.number().min(0).required('Campo obrigatório'),
@@ -45,44 +47,56 @@ const createCardSchema = yup.object().shape({
   listId: yup.string().required('Campo obrigatório'),
 });
 
-export const AddCardModal = ({
+export const EditCardModal = ({
   isOpen,
   onClose,
   columns,
   members,
   refetchBoard,
-}: AddCardModalProps) => {
-  const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(createCardSchema),
+  selectedTask,
+}: EditCardModalProps) => {
+  const { register, handleSubmit, formState, setValue } = useForm({
+    resolver: yupResolver(editCardSchema),
   });
 
   const toast = useToast();
   const router = useRouter();
   const { boardId } = router.query;
 
-  const handleCreateTask: SubmitHandler<CreateCardFormData> = async (
-    values
-  ) => {
-    const payload = {
-      name: values.name,
-      dueDate: format(values.dueDate, 'yyyy-MM-dd'),
-      stressPoints: values.stressPoints,
-      taskAssignedId: values.taskAssignedId,
-    };
+  useEffect(() => {
+    if (isOpen && selectedTask?.id) {
+      setValue('name', selectedTask.name);
+      setValue('dueDate', format(parseISO(selectedTask.dueDate), 'yyyy-MM-dd'));
+      setValue('stressPoints', selectedTask.stressPoints);
+      setValue('taskAssignedId', selectedTask.taskAssignedId);
+      setValue('listId', selectedTask.listId);
+    }
+  }, [isOpen, selectedTask, setValue]);
 
-    await api.post<IResponse<Task>>(
-      `/boards/${boardId}/lists/${values.listId}/tasks`,
-      payload
-    );
+  const handleEditTask: SubmitHandler<EditCardFormData> = async (values) => {
+    if (selectedTask?.id) {
+      const payload = {
+        name: values.name,
+        dueDate: format(values.dueDate, 'yyyy-MM-dd'),
+        stressPoints: values.stressPoints,
+        taskAssignedId: values.taskAssignedId,
+        newListId: values.listId,
+      };
 
-    toast({
-      title: 'Tarefa criada com sucesso!',
-      status: 'success',
-      position: 'top-right',
-      isClosable: true,
-    });
-    refetchBoard();
-    onClose();
+      await api.put<IResponse<Task>>(
+        `/boards/${boardId}/lists/${values.listId}/tasks/${selectedTask.id}`,
+        payload
+      );
+
+      toast({
+        title: 'Tarefa atualizada com sucesso!',
+        status: 'success',
+        position: 'top-right',
+        isClosable: true,
+      });
+      refetchBoard();
+      onClose();
+    }
   };
 
   return (
@@ -95,14 +109,14 @@ export const AddCardModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="white">Adicionar nova tarefa</ModalHeader>
+        <ModalHeader color="white">Editar tarefa</ModalHeader>
 
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
         <ModalBody mb={4}>
           <Flex
             direction="column"
             as="form"
-            onSubmit={handleSubmit(handleCreateTask)}
+            onSubmit={handleSubmit(handleEditTask)}
             noValidate
           >
             <Input
@@ -117,7 +131,7 @@ export const AddCardModal = ({
               label="Prazo"
               type="date"
               error={formState.errors.dueDate}
-              {...register('dueDate')}
+              {...register('dueDate', { valueAsDate: false })}
             />
             <Select
               isRequired
@@ -153,10 +167,10 @@ export const AddCardModal = ({
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}
-              loadingText="Criando"
+              loadingText="Salvando"
               spinnerPlacement="end"
             >
-              Criar tarefa
+              Salvar tarefa
             </Button>
           </Flex>
         </ModalBody>

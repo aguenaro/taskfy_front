@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import {
   Draggable,
   Droppable,
@@ -7,29 +7,46 @@ import {
 } from 'react-beautiful-dnd';
 import { MdAdd } from 'react-icons/md';
 
-import { Box, Flex, Text, Stack, Icon } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, useDisclosure } from '@chakra-ui/react';
+import { Column } from 'interfaces/Column';
 import { Task } from 'interfaces/Task';
 
 import { ColumnCard } from './ColumnCard';
+import { EditBoardColumnModal } from './EditBoardColumnModal';
 
 interface BoardColumnProps {
-  title: string;
   index: number;
-  tasks: Task[];
+  column: Column;
   onClick: (task: Task) => void;
   addCard: () => void;
+  refetchBoard: () => void;
 }
 
 const BoardColumnComponent = ({
-  title,
   index,
-  tasks,
+  column,
   onClick,
   addCard,
+  refetchBoard,
 }: BoardColumnProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [selectedColumn, setSelectedColumn] = useState<Column>({} as Column);
+
+  function handleEditColumn(column: Column) {
+    setSelectedColumn(column);
+    onOpen();
+  }
+
   return (
     <>
-      <Draggable draggableId={title} index={index}>
+      <EditBoardColumnModal
+        isOpen={isOpen}
+        onClose={onClose}
+        column={selectedColumn}
+        refetchBoard={refetchBoard}
+      />
+      <Draggable draggableId={column.name} index={index}>
         {(provided: DraggableProvided) => (
           <Box
             bg="blue.800"
@@ -46,30 +63,34 @@ const BoardColumnComponent = ({
               mb={5}
               {...provided.dragHandleProps}
             >
-              <Text fontSize="md" color="white">
-                {title}
+              <Text
+                fontSize="md"
+                color="white"
+                onDoubleClick={() => handleEditColumn(column)}
+              >
+                {column.name}
               </Text>
             </Flex>
-            <Droppable droppableId={title} type="task">
-              {(provided: DroppableProvided, snapshot) => (
+            <Droppable droppableId={column.name} type="task">
+              {(provided: DroppableProvided) => (
                 <Flex
                   direction="column"
                   spacing={3}
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {tasks.map((task, index) => (
+                  {column.tasks.map((task, index) => (
                     <ColumnCard
                       key={task.id}
-                      column={title}
+                      column={column.name}
                       index={index}
                       task={task}
                       onClick={() => onClick(task)}
                     />
                   ))}
                   <Draggable
-                    draggableId={`button-add-task-${title}`}
-                    index={tasks.length}
+                    draggableId={`button-add-task-${column.name}`}
+                    index={column.tasks.length}
                     isDragDisabled
                   >
                     {(provided: DraggableProvided) => (

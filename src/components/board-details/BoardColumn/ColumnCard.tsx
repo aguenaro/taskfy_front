@@ -22,7 +22,7 @@ export const ColumnCardComponent = ({
   function checkFinishDate(date: string) {
     const differenceBetweenDates = differenceInDays(parseISO(date), new Date());
 
-    if (column === 'Finalizado') {
+    if (column === 'Finalizadas') {
       return 'green.300';
     } else if (differenceBetweenDates > 0) {
       return 'white';
@@ -34,8 +34,8 @@ export const ColumnCardComponent = ({
   }
 
   return (
-    <Draggable draggableId={task.title} index={index}>
-      {(provided, snapshot) => (
+    <Draggable draggableId={task.name} index={index}>
+      {(provided) => (
         <Flex
           direction="column"
           justify="space-between"
@@ -52,18 +52,12 @@ export const ColumnCardComponent = ({
           {...provided.dragHandleProps}
         >
           <Text color="white" fontSize="sm" isTruncated>
-            {task.title}
+            {task.name}
           </Text>
           <Flex align="center">
-            <Avatar
-              name={task.assignedFor}
-              src={`https://avatars.githubusercontent.com/${task.assignedFor}`}
-              w={5}
-              h={5}
-              mr={2}
-            />
-            <Text color={checkFinishDate(task.deadline)} fontSize="sm">
-              {formatDistance(parseISO(task.deadline), new Date(), {
+            <Avatar name={task.taskAssignedId} w={5} h={5} mr={2} />
+            <Text color={checkFinishDate(task.dueDate)} fontSize="sm">
+              {formatDistance(parseISO(task.dueDate), new Date(), {
                 locale: ptBR,
                 addSuffix: true,
               })}

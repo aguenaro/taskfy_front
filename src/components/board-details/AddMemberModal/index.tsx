@@ -12,49 +12,52 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from 'components/Forms';
-import { Column } from 'interfaces/Column';
+import { Select } from 'components/Forms';
 import { IResponse } from 'interfaces/IResponse';
 import { ModalProps } from 'interfaces/ModalProps';
+import { Task } from 'interfaces/Task';
+import { User } from 'interfaces/User';
 import { useRouter } from 'next/router';
 import api from 'services/api';
 import * as yup from 'yup';
 
-interface AddColumnModalProps extends ModalProps {
+interface AddMemberModalProps extends ModalProps {
+  members: User[];
+  organizationUsers: User[];
   refetchBoard: () => void;
 }
 
-interface CreateColumnFormData {
-  name: string;
+interface AddMemberFormData {
+  memberId: string;
 }
 
-const createColumnSchema = yup.object().shape({
-  name: yup.string().required('Campo obrigatório'),
+const addMemberSchema = yup.object().shape({
+  memberId: yup.string().required('Campo obrigatório'),
 });
 
-export const AddColumnModal = ({
+export const AddMemberModal = ({
   isOpen,
   onClose,
+  members,
+  organizationUsers,
   refetchBoard,
-}: AddColumnModalProps) => {
+}: AddMemberModalProps) => {
   const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(createColumnSchema),
+    resolver: yupResolver(addMemberSchema),
   });
+
   const toast = useToast();
   const router = useRouter();
   const { boardId } = router.query;
 
-  const handleCreateColumn: SubmitHandler<CreateColumnFormData> = async (
-    values
-  ) => {
-    const payload = {
-      name: values.name,
-    };
-
-    await api.post<IResponse<Column>>(`/boards/${boardId}/lists`, payload);
+  const handleAddMember: SubmitHandler<AddMemberFormData> = async (values) => {
+    await api.post<IResponse<Task>>(
+      `/boards/${boardId}/user/${values.memberId}`,
+      {}
+    );
 
     toast({
-      title: 'Coluna criada com sucesso!',
+      title: 'Membro adicionado com sucesso!',
       status: 'success',
       position: 'top-right',
       isClosable: true,
@@ -63,6 +66,8 @@ export const AddColumnModal = ({
     refetchBoard();
     onClose();
   };
+
+  const membersListId = members.map((member) => member.id);
 
   return (
     <Modal
@@ -74,22 +79,29 @@ export const AddColumnModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="white">Adicionar nova coluna</ModalHeader>
+        <ModalHeader color="white">Adicionar novo membro</ModalHeader>
 
         <ModalCloseButton color="white" _focus={{ border: 'none' }} />
         <ModalBody mb={4}>
           <Flex
             direction="column"
             as="form"
-            onSubmit={handleSubmit(handleCreateColumn)}
+            onSubmit={handleSubmit(handleAddMember)}
             noValidate
           >
-            <Input
+            <Select
               isRequired
-              label="Nome"
-              type="text"
-              error={formState.errors.name}
-              {...register('name')}
+              label="Novo membro"
+              error={formState.errors.memberId}
+              options={organizationUsers
+                .filter((user) => !membersListId.includes(user.id))
+                .map((user) => {
+                  return {
+                    value: user.id,
+                    label: `${user.firstName} ${user.lastName}`,
+                  };
+                })}
+              {...register('memberId')}
             />
 
             <Button
@@ -97,10 +109,8 @@ export const AddColumnModal = ({
               variant="solid"
               margin="10px auto"
               isLoading={formState.isSubmitting}
-              loadingText="Criando"
-              spinnerPlacement="end"
             >
-              Criar coluna
+              Adicionar
             </Button>
           </Flex>
         </ModalBody>
