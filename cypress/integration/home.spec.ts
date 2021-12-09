@@ -10,7 +10,7 @@ describe('Home', () => {
   });
 
   it('Navigate from home with landing button', () => {
-    cy.contains('improve my tech productivity').click();
+    cy.contains('melhorar a produtividade da minha equipe').click();
     cy.wait(5000);
     cy.url().should('include', '/signup');
   });

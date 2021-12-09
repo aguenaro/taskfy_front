@@ -16,8 +16,8 @@ const SignupPage: NextPage = () => {
           <VerticalDivision />
           <SignupOAuth />
         </Flex>
-        <Box position="absolute" bottom="-5px" zIndex="-1">
-          <Image src={wavesImg} alt="Ondas" />
+        <Box w="100%" position="absolute" bottom="-5px" zIndex="-1">
+          <Image layout="responsive" src={wavesImg} alt="Ondas" />
         </Box>
       </Box>
       <Footer />

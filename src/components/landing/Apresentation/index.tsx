@@ -8,12 +8,12 @@ export const Apresentation = () => {
     <Flex align="flex-start" mx={20} mt="10%" h="70vh">
       <Stack>
         <Text color="white" fontSize="6xl" textShadow="0px 0px 10px #FFFFFF">
-          task <br /> management <br />
-          for devs.
+          Gerenciamento <br /> de tarefas <br />
+          para desenvolvedores.
         </Text>
         <Text color="white" fontSize="md">
-          A simple productivity tool, <br />
-          from devs for devs.
+          Uma ferramente de produtividade simples, <br />
+          feito de dev para dev.
         </Text>
       </Stack>
       <Flex justify="space-around" w="100%">

@@ -14,23 +14,23 @@ export const PlanCard = ({ planType, price }: PlanCardProps) => {
         </Text>
       </Box>
       <Text color="white" fontSize="xs">
-        unlimited boards
+        quadros ilimitados
       </Text>
       <Text color="white" fontSize="xs">
-        keep track of your tasks
+        manter controle das suas tarefas
       </Text>
       <Text color="white" fontSize="xs">
-        devops integrated with git
+        devops integrado com git
       </Text>
 
       <Text color="white" fontSize="lg" mt={10}>
-        for only
+        por apenas
       </Text>
       <Text color="white" fontSize="6xl" textAlign="center" my={3}>
         $ {price}
       </Text>
       <Text color="white" fontSize="md" textAlign="end">
-        per month
+        por mês
       </Text>
     </Box>
   );

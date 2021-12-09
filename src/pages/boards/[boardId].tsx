@@ -325,8 +325,8 @@ const BoardDetails: NextPage = () => {
             </Droppable>
           </DragDropContext>
         )}
-        <Box position="absolute" bottom="0" zIndex="-1">
-          <Image src={wavesImg} alt="Ondas" />
+        <Box w="100%" position="absolute" bottom="-20px" zIndex="-1">
+          <Image layout="responsive" src={wavesImg} alt="Ondas" />
         </Box>
       </Flex>
       {/* <Footer /> */}

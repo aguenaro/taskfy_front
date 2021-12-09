@@ -17,18 +17,18 @@ export const PricingCard = () => {
       p={10}
     >
       <Text fontSize="2xl" color="teal.200">
-        become a costumer
+        se torne um cliente
       </Text>
       <Text fontSize="2xl" color="white" textAlign="center">
-        and remove the constraints from your tech and make it move <br /> at the
-        speed of{' '}
+        e remova os gargalos do seu time de tecnologia para evoluir <br /> na
+        velocidade da{' '}
         <Text as="span" color="teal.200" textShadow="0px 0px 20px #4BCFEE">
-          light
+          luz
         </Text>
       </Text>
       <Flex align="center" justify="space-evenly" my={10}>
-        <PlanCard planType="single person" price={4.99} />
-        <PlanCard planType="enterprise" price={15.99} />
+        <PlanCard planType="pequenas empresas" price={14.99} />
+        <PlanCard planType="corporações" price={9.99} />
       </Flex>
       <Button
         borderRadius={15}
@@ -42,7 +42,7 @@ export const PricingCard = () => {
         _hover={{ color: 'white' }}
         onClick={() => push('/signup')}
       >
-        improve my tech productivity
+        melhorar a produtividade da minha equipe
       </Button>
     </Flex>
   );
