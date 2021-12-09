@@ -1,34 +1,88 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Taskfy
 
-## Getting Started
+Frontend do projeto Taskfy da disciplina PCS3643 - Laboratório de Engenharia de Software I.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
+## Requisitos
+
+Para executar o servidor é necessário instalar o Node.js e um gerenciador de pacotes, Yarn.
+
+### Node
+
+- #### Instalação do Node.js em windows
+
+  Visite o [site oficial do Node.js](https://nodejs.org/) e baixe o instalador
+  Além disso, também é necessário instalar o `git` e o `npm`.
+  O npm vem instalado com o node, enquanto o git pode ser baixado [aqui](https://git-scm.com/)
+
+- #### Instalação do Node.js no ubuntu
+  É possível instalar o node.js e o npm com o apt.
+
+```zsh
+$ sudo apt-get install nodejs
+$ sudo apt-get install npm
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- #### Outros Sistemas Operacionais
+  Para baixar o node em outros sistemas operacionais, visite o [site oficial do Noje.js](https://nodejs.org/) e o [site oficial do NPM](https://npmjs.org/).
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Para validar se a instalação ocorreu com sucesso, execute os seguintes comandos:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```zsh
+$ node --version
+v16.3.0
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+$ npm --version
+7.15.1
+```
 
-## Learn More
+### Instalação do yarn
 
-To learn more about Next.js, take a look at the following resources:
+Após instalar o npm, execute o seguinte comando:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```zsh
+$ npm install -g yarn
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Clonando este repositório
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```zsh
+$ git clone git@github.com:aguenaro/taskfy_front.git
+$ cd taskfy_front
+$ yarn install
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Executando o projeto
+
+### Buildando a aplicação em dev
+
+```zsh
+$ yarn dev
+```
+
+### Buildando a aplicação
+
+Para fazer o build, basta executar:
+
+```zsh
+$ yarn build
+```
+
+### Executando build:
+
+Para executar o build, basta executar no terminal:
+
+```zsh
+$ yarn start
+```
+
+## Testando o projeto
+
+Este projeto apresenta testes de integração (utilizamos o framework cypress para isto). Para testar, basta executar:
+
+```zsh
+$ yarn test
+```

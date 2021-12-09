@@ -49,8 +49,8 @@ const Home: NextPage = () => {
         <Header />
         <Apresentation />
         <PricingCard />
-        <Box position="absolute" bottom="-5px" zIndex="-1">
-          <Image src={mountainImg} alt="Montanhas" />
+        <Box w="100%" position="absolute" bottom="-35px" zIndex="-1">
+          <Image layout="responsive" src={mountainImg} alt="Montanhas" />
         </Box>
       </Box>
       <Footer />

@@ -13,7 +13,7 @@ const pullRequestsList = [
   },
   {
     id: 67,
-    title: 'sign up fixed',
+    title: 'Signup feito',
     user: 'aguenaro',
     lastUpdate: '2 days ago',
   },
@@ -38,7 +38,7 @@ export const PullRequestsListCard = () => {
       <Flex align="center" mb={5}>
         <Icon as={GoGitPullRequest} color="white" w={5} h={5} mr={2} />
         <Text fontSize="md" color="white">
-          Pull Requests
+          Solitação para puxar
         </Text>
       </Flex>
       <Stack spacing={3}>
