@@ -1,7 +1,6 @@
-import { Box, Flex, Text, Divider, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Divider } from '@chakra-ui/react';
 import logo from 'assets/img/taskfy_logo_branco.png';
 import { Footer } from 'components/Footer';
-import { Input } from 'components/Forms';
 import { HorizontalDivision, SigninOAuth, SigninForm } from 'components/signin';
 import { NextPage } from 'next';
 import Image from 'next/image';
