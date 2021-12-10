@@ -70,7 +70,7 @@ export const MembersList = ({
                 {member.username}
               </Text>
             </Flex>
-            {member.id !== user?.id && (
+            {member.id !== user?.id && isManager && (
               <Text
                 color="red"
                 fontSize="x-small"

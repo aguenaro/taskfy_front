@@ -23,6 +23,7 @@ import { EditCardModal } from '../EditCardModal';
 interface TaskDetailsModalProps {
   isOpen: boolean;
   membersList: User[];
+  isManager: boolean;
   selectedTask?: Task;
   columns: Column[];
   refetchBoard: () => void;
@@ -32,6 +33,7 @@ interface TaskDetailsModalProps {
 export const TaskDetailsModal = ({
   isOpen,
   onClose,
+  isManager,
   selectedTask,
   columns,
   membersList,
@@ -72,15 +74,17 @@ export const TaskDetailsModal = ({
           <ModalHeader color="white">
             <Flex align="center">
               <Text>{selectedTask?.name}</Text>
-              <Icon
-                as={FiEdit}
-                color="white"
-                w={4}
-                h={4}
-                ml={3}
-                cursor="pointer"
-                onClick={handleEditTask}
-              />
+              {isManager && (
+                <Icon
+                  as={FiEdit}
+                  color="white"
+                  w={4}
+                  h={4}
+                  ml={3}
+                  cursor="pointer"
+                  onClick={handleEditTask}
+                />
+              )}
             </Flex>
           </ModalHeader>
 

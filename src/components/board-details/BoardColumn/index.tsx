@@ -17,6 +17,7 @@ import { EditBoardColumnModal } from './EditBoardColumnModal';
 interface BoardColumnProps {
   index: number;
   column: Column;
+  isManager: boolean;
   onClick: (task: Task) => void;
   addCard: () => void;
   refetchBoard: () => void;
@@ -25,6 +26,7 @@ interface BoardColumnProps {
 const BoardColumnComponent = ({
   index,
   column,
+  isManager,
   onClick,
   addCard,
   refetchBoard,
@@ -51,7 +53,7 @@ const BoardColumnComponent = ({
           <Box
             bg="blue.800"
             borderRadius="30px"
-            minW="300px"
+            w="330px"
             p={6}
             mr={7}
             ref={provided.innerRef}
@@ -66,7 +68,9 @@ const BoardColumnComponent = ({
               <Text
                 fontSize="md"
                 color="white"
-                onDoubleClick={() => handleEditColumn(column)}
+                onDoubleClick={() => {
+                  if (isManager) handleEditColumn(column);
+                }}
               >
                 {column.name}
               </Text>
@@ -88,31 +92,33 @@ const BoardColumnComponent = ({
                       onClick={() => onClick(task)}
                     />
                   ))}
-                  <Draggable
-                    draggableId={`button-add-task-${column.name}`}
-                    index={column.tasks.length}
-                    isDragDisabled
-                  >
-                    {(provided: DraggableProvided) => (
-                      <Flex
-                        align="center"
-                        bg="gray.900"
-                        p={3}
-                        boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
-                        borderRadius={5}
-                        cursor="pointer"
-                        onClick={addCard}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <Icon as={MdAdd} color="white" mr={2} />
-                        <Text color="white" fontSize="sm">
-                          adicionar tarefa
-                        </Text>
-                      </Flex>
-                    )}
-                  </Draggable>
+                  {isManager && (
+                    <Draggable
+                      draggableId={`button-add-task-${column.name}`}
+                      index={column.tasks.length}
+                      isDragDisabled
+                    >
+                      {(provided: DraggableProvided) => (
+                        <Flex
+                          align="center"
+                          bg="gray.900"
+                          p={3}
+                          boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
+                          borderRadius={5}
+                          cursor="pointer"
+                          onClick={addCard}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Icon as={MdAdd} color="white" mr={2} />
+                          <Text color="white" fontSize="sm">
+                            adicionar tarefa
+                          </Text>
+                        </Flex>
+                      )}
+                    </Draggable>
+                  )}
                   {provided.placeholder}
                 </Flex>
               )}

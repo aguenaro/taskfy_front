@@ -128,12 +128,12 @@ export const Sidebar = ({
             onChange={(text) => setEditableBoardName(text)}
             onBlur={handleEditBoardName}
             isPreviewFocusable={false}
+            isDisabled={!isManager}
           >
             <EditablePreview color="white" />
             <EditableInput color="white" id="boardName" />
-            <EditableControls />
+            {isManager && <EditableControls />}
           </Editable>
-          {/* <Icon cursor="pointer" as={MdEdit} color="white" w={5} h={5} /> */}
         </Flex>
         <Divider mt={3} />
         <Flex
@@ -148,41 +148,25 @@ export const Sidebar = ({
             openModal={onOpen}
             refetchBoard={refetchBoard}
           />
-          {/* <Stack spacing={4}>
-          <Box>
-            <Text color="white" fontSize="small">
-              Início
-            </Text>
-            <Text color="white" fontSize="small" fontWeight="bold">
-              {format(parseISO('2021-08-01'), 'dd/MM/yyyy')}
-            </Text>
-          </Box>
-          <Box>
-            <Text color="white" fontSize="small">
-              Fim
-            </Text>
-            <Text color="white" fontSize="small" fontWeight="bold">
-              {format(parseISO('2021-12-01'), 'dd/MM/yyyy')}
-            </Text>
-          </Box>
-        </Stack> */}
-          <Flex
-            align="center"
-            justify="center"
-            cursor="pointer"
-            onClick={openGraph}
-          >
-            <Icon
+          {(isManager || user?.isAdmin) && (
+            <Flex
+              align="center"
+              justify="center"
               cursor="pointer"
-              as={VscGraphLine}
-              color="white"
-              w={5}
-              h={5}
-            />
-            <Text color="white" fontSize="small" ml={2}>
-              Visualizar gráfico
-            </Text>
-          </Flex>
+              onClick={openGraph}
+            >
+              <Icon
+                cursor="pointer"
+                as={VscGraphLine}
+                color="white"
+                w={5}
+                h={5}
+              />
+              <Text color="white" fontSize="small" ml={2}>
+                Visualizar gráfico
+              </Text>
+            </Flex>
+          )}
           <Stack spacing={4} m="0 20px">
             {!isManager && (
               <Button

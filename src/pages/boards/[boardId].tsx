@@ -239,6 +239,7 @@ const BoardDetails: NextPage = () => {
         membersList={boardDetails.users ?? []}
         columns={boardDetails.lists ?? []}
         refetchBoard={getBoardDetails}
+        isManager={isManager}
       />
       <BurndownChartModal isOpen={isOpenGraph} onClose={onCloseGraph} />
       <AddCardModal
@@ -303,23 +304,26 @@ const BoardDetails: NextPage = () => {
                       onClick={(task: Task) => openDetailsModal(task)}
                       addCard={() => onOpenAddCard()}
                       refetchBoard={getBoardDetails}
+                      isManager={isManager}
                     />
                   ))}
                   {provided.placeholder}
-                  <Flex
-                    align="center"
-                    justify="center"
-                    bg="blue.800"
-                    borderRadius="30px"
-                    minW="300px"
-                    p={4}
-                    onClick={onOpenAddColumn}
-                  >
-                    <Icon as={MdAdd} color="white" mr={2} />
-                    <Text color="white" fontSize="sm" isTruncated>
-                      adicionar coluna
-                    </Text>
-                  </Flex>
+                  {isManager && (
+                    <Flex
+                      align="center"
+                      justify="center"
+                      bg="blue.800"
+                      borderRadius="30px"
+                      w="300px"
+                      p={4}
+                      onClick={onOpenAddColumn}
+                    >
+                      <Icon as={MdAdd} color="white" mr={2} />
+                      <Text color="white" fontSize="sm" isTruncated>
+                        adicionar coluna
+                      </Text>
+                    </Flex>
+                  )}
                 </Flex>
               )}
             </Droppable>
